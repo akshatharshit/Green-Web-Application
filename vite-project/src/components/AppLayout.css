@@ -1,0 +1,22 @@
+.app-layout-container {
+  display: flex; /* Use flex to position navbar and the rest */
+  flex-direction: column; /* Stack navbar on top of content */
+  min-height: 100vh; /* Ensure full viewport height */
+}
+
+/* Style for the main content in its normal state */
+.main-content {
+  flex-grow: 1; /* Allow it to take up remaining vertical space */
+  transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin adjustment */
+  margin-left: 0; /* Default margin */
+}
+
+/* Style for the main content when the sidebar is open */
+.main-content.sidebar-open {
+  margin-left: 256px; /* Adjust to the width of your SideBar (w-64 = 256px) */
+}
+
+/* Optional: Style the pt-16 and px-4 inside main-content if needed */
+.main-content > div {
+  /* Add any specific padding or styling for the content container */
+}
