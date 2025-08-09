@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import Lottie2 from './lottie2';
+import Lottie2 from './Lottie2';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
