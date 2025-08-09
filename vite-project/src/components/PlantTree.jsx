@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import Lottie1 from './lottie1';
 import treeVideo from '../assets/tree.mp4'; 
 import { useNavigate } from 'react-router-dom';
 
