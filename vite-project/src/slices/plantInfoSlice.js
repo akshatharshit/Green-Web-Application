@@ -40,7 +40,6 @@ export const { plantDetails, getPlantDetails, plantError, searchPlants } =
 export const fetchPlantDetails = () => async (dispatch) => {
   dispatch(plantDetails());
   try {
-    // Use backend endpoint (adjust URL if deployed)
     const response = await axios.get(
       `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/plants`
     );

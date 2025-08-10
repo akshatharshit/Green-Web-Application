@@ -8,7 +8,7 @@ import blogRoutes from './routes/blog.js';
 import leaderBlog from './routes/submissionRoutes.js';
 import testimonialRoutes from './routes/testimonials.js';
 import upiRoutes from './routes/upi.js';
-import  plantRoutes from "./routes/plants.js"
+import  plantRoutes from "./routes/plantRoutes.js"
 
 dotenv.config();
 const app = express();
