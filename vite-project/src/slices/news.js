@@ -52,9 +52,8 @@ export const fetchEnvironmentNews = () => async (dispatch) => {
   dispatch(fetchNewsStart());
   try {
     const backendUrl =
-      import.meta.env.VITE_BACKEND_URL ||
-      process.env.REACT_APP_BACKEND_URL ||
-      "http://localhost:5000"; // dev fallback
+      import.meta.env.VITE_API_BASE_URL ||
+      "http://localhost:5000"; 
 
     const response = await axios.get(`${backendUrl}/api/environment-news`);
 
