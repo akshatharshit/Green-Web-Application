@@ -1,8 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const environmentSlice = createSlice({
-  name: 'environment',
+  name: "environment",
   initialState: {
     loading: false,
     news: [],
@@ -16,8 +16,8 @@ const environmentSlice = createSlice({
     },
     getNewsSuccess(state, action) {
       state.loading = false;
-      state.news = action.payload;
-      state.filteredNews = action.payload;
+      state.news = Array.isArray(action.payload) ? action.payload : [];
+      state.filteredNews = state.news;
     },
     fetchNewsError(state, action) {
       state.loading = false;
@@ -25,34 +25,43 @@ const environmentSlice = createSlice({
     },
     searchNews(state, action) {
       const query = action.payload.toLowerCase();
-      state.filteredNews = state.news.filter((article) =>
-        article.title?.toLowerCase().includes(query) ||
-        article.description?.toLowerCase().includes(query)
+      state.filteredNews = state.news.filter(
+        (article) =>
+          article.title?.toLowerCase().includes(query) ||
+          article.description?.toLowerCase().includes(query)
       );
     },
   },
 });
 
 // Actions
-export const { fetchNewsStart, getNewsSuccess, fetchNewsError, searchNews } =
-  environmentSlice.actions;
+export const {
+  fetchNewsStart,
+  getNewsSuccess,
+  fetchNewsError,
+  searchNews,
+} = environmentSlice.actions;
 
 // Selectors
 export const selectFilteredNews = (state) => state.environment.filteredNews;
 export const selectLoading = (state) => state.environment.loading;
 export const selectError = (state) => state.environment.error;
 
-// Thunk for fetching news (from backend)
+// Thunk for fetching news from backend
 export const fetchEnvironmentNews = () => async (dispatch) => {
   dispatch(fetchNewsStart());
   try {
-    // Call your backend proxy route
-    const response = await axios.get('/api/environment-news');
+    const backendUrl =
+      import.meta.env.VITE_BACKEND_URL ||
+      process.env.REACT_APP_BACKEND_URL ||
+      "http://localhost:5000"; // dev fallback
+
+    const response = await axios.get(`${backendUrl}/api/environment-news`);
 
     dispatch(getNewsSuccess(response.data));
   } catch (error) {
-    console.error('Error fetching environment news:', error);
-    dispatch(fetchNewsError('Failed to fetch environment news'));
+    console.error("Error fetching environment news:", error);
+    dispatch(fetchNewsError("Failed to fetch environment news"));
   }
 };
 
