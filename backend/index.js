@@ -9,6 +9,7 @@ import leaderBlog from './routes/submissionRoutes.js';
 import testimonialRoutes from './routes/testimonials.js';
 import upiRoutes from './routes/upi.js';
 import  plantRoutes from "./routes/plantRoutes.js"
+import environmentRoutes from "./routes/environmentRoutes.js"
 
 dotenv.config();
 const app = express();
@@ -37,6 +38,7 @@ app.use('/api/submission', leaderBlog);
 app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/upi', upiRoutes);
 app.use("/api/plants", plantRoutes);
+app.use("/api/environment-news", environmentRoutes);
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {

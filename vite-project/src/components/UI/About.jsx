@@ -92,20 +92,20 @@ const About = () => {
         <div className="relative border-l-4 border-green-600 pl-6 max-w-3xl mx-auto">
           {[
             {
-              year: 2022,
+              year: 2025,
               stage: "🌱 " + t("Seedling Phase"),
-              desc: t("Kickoff in Brazil with 100 trees. Our first roots were planted by passionate individuals."),
+              desc: t("Kickoff in india with 5 trees. Our first roots were planted by passionate individuals."),
             },
             {
-              year: 2023,
+              year: 2025,
               stage: "🌿 " + t("Growth Phase"),
-              desc: t("Expanded to 6 countries and hit 10,000+ trees. Volunteers joined and content blossomed."),
+              desc: t("Expanded to 2 countries and hit 10+ trees. Volunteers joined and content blossomed."),
             },
-            {
-              year: 2024,
-              stage: "🌳 " + t("Forest Phase"),
-              desc: t("Over 500 monthly contributors, massive user-generated content, and global community impact."),
-            },
+            // {
+            //   year: 2024,
+            //   stage: "🌳 " + t("Forest Phase"),
+            //   desc: t("Over 500 monthly contributors, massive user-generated content, and global community impact."),
+            // },
             {
               year: 2025,
               stage: "🌏 " + t("Sustainability Phase"),
