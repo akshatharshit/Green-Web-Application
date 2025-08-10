@@ -1,16 +1,29 @@
 // backend/routes/environmentRoutes.js
-import express from 'express';
-import axios from 'axios';
+import express from "express";
+import axios from "axios";
 
 const router = express.Router();
 
 // GET /api/environment-news
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const apiKey = process.env.NEWS_API_KEY;
-    const url = `https://newsapi.org/v2/everything?q=environment&apiKey=${apiKey}`;
 
-    const { data } = await axios.get(url);
+    if (!apiKey) {
+      return res.status(500).json({ error: "Missing NEWS_API_KEY" });
+    }
+
+    const { data } = await axios.get("https://newsapi.org/v2/everything", {
+      params: {
+        q: "environment",
+        apiKey,
+      },
+    });
+
+    if (!Array.isArray(data.articles)) {
+      console.error("Unexpected NewsAPI response:", data);
+      return res.json([]); // Always return an array
+    }
 
     const simplifiedData = data.articles.map((article) => ({
       id: article.url,
@@ -23,8 +36,8 @@ router.get('/', async (req, res) => {
 
     res.json(simplifiedData);
   } catch (error) {
-    console.error('Error fetching environment news:', error.message);
-    res.status(500).json({ error: 'Failed to fetch environment news' });
+    console.error("Error fetching environment news:", error.message);
+    res.status(500).json([]); // Always send an array so frontend .map() doesn't crash
   }
 });
 
