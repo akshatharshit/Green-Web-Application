@@ -36,15 +36,14 @@ const plantinfoslice = createSlice({
 export const { plantDetails, getPlantDetails, plantError, searchPlants } =
   plantinfoslice.actions;
 
+// Fetch from backend instead of Trefle API directly
 export const fetchPlantDetails = () => async (dispatch) => {
   dispatch(plantDetails());
   try {
-    // Direct Trefle API call with API key from .env
-    const trefleURL = `https://trefle.io/api/v1/plants?token=${
-      import.meta.env.VITE_TREFLE_API_KEY
-    }&limit=10`;
-
-    const response = await axios.get(trefleURL);
+    // Use backend endpoint (adjust URL if deployed)
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/plants`
+    );
 
     // Format the plant data
     const simplifiedData = response.data.data.map((plant) => ({
@@ -56,7 +55,7 @@ export const fetchPlantDetails = () => async (dispatch) => {
 
     dispatch(getPlantDetails(simplifiedData));
   } catch (error) {
-    console.error('Trefle API Error:', error);
+    console.error('Backend API Error:', error);
     dispatch(plantError('Failed to fetch plant details'));
   }
 };
