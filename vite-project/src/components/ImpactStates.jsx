@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import CountUp from 'react-countup';
 
 const initialStats = [
-  { label: 'Trees Planted', value: 12500 },
-  { label: 'CO₂ Reduced (kg)', value: 430000 },
-  { label: 'Volunteers Joined', value: 3400 },
-  { label: 'Projects Completed', value: 85 },
+  { label: 'Trees Planted', value: 12 },
+  { label: 'CO₂ Reduced (kg)', value: 430 },
+  { label: 'Volunteers Joined', value: 3 },
+  { label: 'Projects Completed', value: 2 },
 ];
 
 export default function ImpactStats() {

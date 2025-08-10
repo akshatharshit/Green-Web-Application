@@ -1,4 +1,3 @@
-// src/redux/environmentSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -13,6 +12,7 @@ const environmentSlice = createSlice({
   reducers: {
     fetchNewsStart(state) {
       state.loading = true;
+      state.error = null;
     },
     getNewsSuccess(state, action) {
       state.loading = false;
@@ -26,43 +26,32 @@ const environmentSlice = createSlice({
     searchNews(state, action) {
       const query = action.payload.toLowerCase();
       state.filteredNews = state.news.filter((article) =>
-        article.title.toLowerCase().includes(query) ||
-        article.description.toLowerCase().includes(query)
+        article.title?.toLowerCase().includes(query) ||
+        article.description?.toLowerCase().includes(query)
       );
     },
   },
 });
 
 // Actions
-export const { fetchNewsStart, getNewsSuccess, fetchNewsError, searchNews } = environmentSlice.actions;
+export const { fetchNewsStart, getNewsSuccess, fetchNewsError, searchNews } =
+  environmentSlice.actions;
 
 // Selectors
 export const selectFilteredNews = (state) => state.environment.filteredNews;
 export const selectLoading = (state) => state.environment.loading;
 export const selectError = (state) => state.environment.error;
 
-// Thunk for fetching news
+// Thunk for fetching news (from backend)
 export const fetchEnvironmentNews = () => async (dispatch) => {
   dispatch(fetchNewsStart());
   try {
-    const response = await axios.get('https://newsapi.org/v2/everything', {
-      params: {
-        q: 'environment',
-        apiKey: import.meta.env.VITE_REACT_APP_NEWS_API_KEY
+    // Call your backend proxy route
+    const response = await axios.get('/api/environment-news');
 
-      },
-    });
-    
-    const simplifiedData = response.data.articles.map((article) => ({
-      id: article.url,
-      title: article.title,
-      description: article.description,
-      url: article.url,
-      imageUrl: article.urlToImage,
-      publishedAt: article.publishedAt,
-    }));
-    dispatch(getNewsSuccess(simplifiedData));
+    dispatch(getNewsSuccess(response.data));
   } catch (error) {
+    console.error('Error fetching environment news:', error);
     dispatch(fetchNewsError('Failed to fetch environment news'));
   }
 };

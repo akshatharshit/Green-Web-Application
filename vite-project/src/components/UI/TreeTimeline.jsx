@@ -1,7 +1,7 @@
 const events = [
-  { year: 2022, title: "First 100 Trees", desc: "Kickoff in Brazil rainforest.", icon: "🌱" },
-  { year: 2023, title: "10,000 Milestone", desc: "Reforestation projects expanded to 6 countries.", icon: "🌿" },
-  { year: 2024, title: "Community Driven", desc: "Over 500 volunteers contributing monthly.", icon: "🌳" },
+  { year: 2025, title: "First 1 Tree", desc: "Kickoff in Brazil rainforest.", icon: "🌱" },
+  { year: 2025, title: "10 Milestone", desc: "Reforestation projects expanded to 2 countries.", icon: "🌿" },
+  { year: 2025, title: "Community Driven", desc: "Over 5 volunteers contributing monthly.", icon: "🌳" },
 ];
 
 const TreeTimeline = () => {
