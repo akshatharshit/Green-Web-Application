@@ -55,6 +55,8 @@ disease_classes = [
     "Tomato___healthy"
 ]
 
+
+
 # ------------------ Weather API ------------------
 def weather_fetch(city_name):
     api_key = config.weather_api_key
@@ -91,7 +93,8 @@ def predict_image(img):
 
 # ------------------ Flask App ------------------
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
+
 
 @app.route('/')
 def hello_world():
