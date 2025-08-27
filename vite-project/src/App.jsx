@@ -24,6 +24,7 @@ import Contact from './components/UI/Contact';
 import UpiForm from './components/upi/UpiForm';
 import UpiList from './components/upi/UpiList'
 import WeatherTemp from './components/weatherTemp/WeatherTemp';
+import DiseasePredictor from './components/CROP/DiseasePredictor';
 
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
           <Route path='/upiId' element={<UpiForm />} />
           <Route path='/upiId/edit' element={<UpiList/>} />
           <Route path='/weather' element={<WeatherTemp/>} />
+          <Route path='/disease' element={<DiseasePredictor/>} />
           
         </Routes>
       </MainLayout>

@@ -109,6 +109,14 @@ function NavBar() {
           <span>Weather</span>
         </Button>
 
+        <Button
+          className="hover:text-green-700 flex items-center space-x-2"
+          onClick={() => navigate("/disease")}
+        >
+          <BookCopy className="h-5 w-5" />
+          <span>Crop Disease</span>
+        </Button>
+
 
         <Button
           className="hover:text-green-700 flex items-center space-x-2"
