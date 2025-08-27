@@ -1,17 +1,15 @@
-from flask import Flask, render_template, request, jsonify, redirect
-from markupsafe import Markup   # ✅ Fix: import Markup from markupsafe
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
-import pandas as pd
-from utils.disease import disease_dic
 import requests
-import pickle
+import os
 import io
-import config
 import torch
 from torchvision import transforms
 from PIL import Image
+from utils.disease import disease_dic
 from utils.model import ResNet9
+import config
 
 # ------------------ Disease classes ------------------
 disease_classes = [
@@ -55,112 +53,92 @@ disease_classes = [
     "Tomato___healthy"
 ]
 
-
-
 # ------------------ Weather API ------------------
 def weather_fetch(city_name):
     api_key = config.weather_api_key
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
-
     complete_url = base_url + "appid=" + api_key + "&q=" + city_name
     response = requests.get(complete_url)
     x = response.json()
 
-    if x["cod"] != "404":
+    if x.get("cod") != "404":
         y = x["main"]
         temperature = round((y["temp"] - 273.15), 2)
         humidity = y["humidity"]
         return temperature, humidity
-    else:
-        return None
+    return None
 
 # ------------------ Disease Prediction ------------------
 def predict_image(img):
-    disease_model_path = 'models/plant_disease_model.pth'
-    disease_model = ResNet9(3, len(disease_classes))
-    disease_model.load_state_dict(torch.load(disease_model_path, map_location=torch.device('cpu')))
-    transform = transforms.Compose([
-        transforms.Resize(256),
-        transforms.ToTensor(),
-    ])
-    image = Image.open(io.BytesIO(img))
-    img_t = transform(image)
-    img_u = torch.unsqueeze(img_t, 0)
-    yb = disease_model(img_u)
-    _, preds = torch.max(yb, dim=1)
-    prediction = disease_classes[preds[0].item()]
-    return prediction
+    try:
+        disease_model_path = 'models/plant_disease_model.pth'
+        disease_model = ResNet9(3, len(disease_classes))
+        disease_model.load_state_dict(torch.load(disease_model_path, map_location=torch.device('cpu')))
+        disease_model.eval()
+
+        transform = transforms.Compose([
+            transforms.Resize(256),
+            transforms.ToTensor(),
+        ])
+
+        image = Image.open(io.BytesIO(img))
+        img_t = transform(image)
+        img_u = torch.unsqueeze(img_t, 0)
+        yb = disease_model(img_u)
+        _, preds = torch.max(yb, dim=1)
+        prediction = disease_classes[preds[0].item()]
+        return prediction
+    except Exception as e:
+        print("❌ Error in predict_image:", str(e))
+        return None
 
 # ------------------ Flask App ------------------
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
-
+CORS(app)  # Allow all origins
 
 @app.route('/')
-def hello_world():
-    return 'Hello, World!'
-
-@app.route('/check-get', methods=['GET'])
-def check():
-    return jsonify({"message": "hello world"})
-
-@app.route('/check-post', methods=['POST'])
-def check_post():
-    if request.method == 'POST':
-        Name = request.json['name']
-        return jsonify(Name)
-    else:
-        return jsonify("something went wrong!")
+def home():
+    return jsonify({"message": "Backend is running 🚀"})
 
 @app.route('/disease-predict', methods=['POST'])
 def disease_prediction():
-    if request.method == 'POST':
+    try:
         file = request.files['file']
-        try:
-            img = file.read()
-            prediction = predict_image(img)
-            prediction = disease_dic[prediction]
-            return jsonify(prediction)
-        except Exception as e:
-            print("Error:", str(e))
-            return jsonify({"err": "something went wrong!"})
-    else:
-        return jsonify({"err": "oops!!"})
+        img = file.read()
+        prediction = predict_image(img)
+        if prediction and prediction in disease_dic:
+            return jsonify(disease_dic[prediction])
+        else:
+            return jsonify({"error": "Prediction failed"}), 500
+    except Exception as e:
+        print("❌ Error in /disease-predict:", str(e))
+        return jsonify({"error": "Server error"}), 500
 
 @app.route('/crop-predict', methods=['POST'])
 def crop_prediction():
-    if request.method == 'POST':
-        try:
-            from joblib import load
-            crop_recommendation_model_path = 'models/RandomForest.pkl'
+    try:
+        from joblib import load
+        crop_model_path = 'models/RandomForest.pkl'
+        crop_model = load(crop_model_path)
 
-            # ✅ Try joblib instead of pickle
-            try:
-                crop_recommendation_model = load(crop_recommendation_model_path)
-            except Exception as e:
-                print("⚠️ Model load failed:", str(e))
-                return jsonify({"error": "Model file is incompatible with current scikit-learn version."})
+        N = request.json['nitrogen']
+        P = request.json['phosphorous']
+        K = request.json['pottasium']
+        ph = request.json['ph']
+        rainfall = request.json['rainfall']
+        city = request.json['city']
 
-            # Get input values
-            N = request.json['nitrogen']
-            P = request.json['phosphorous']
-            K = request.json['pottasium']
-            ph = request.json['ph']
-            rainfall = request.json['rainfall']
-            city = request.json['city']
-
-            # Fetch weather data
-            if weather_fetch(city) is not None:
-                temperature, humidity = weather_fetch(city)
-                data = np.array([[N, P, K, temperature, humidity, ph, rainfall]])
-                my_prediction = crop_recommendation_model.predict(data)
-                return jsonify({"prediction": my_prediction[0]})
-            else:
-                return jsonify({"error": "Weather fetch failed"})
-        except Exception as e:
-            print("❌ Error in /crop-predict:", str(e))
-            return jsonify({"error": "Something went wrong on server."})
-
+        if weather_fetch(city) is not None:
+            temperature, humidity = weather_fetch(city)
+            data = np.array([[N, P, K, temperature, humidity, ph, rainfall]])
+            my_prediction = crop_model.predict(data)
+            return jsonify({"prediction": my_prediction[0]})
+        else:
+            return jsonify({"error": "Weather fetch failed"}), 400
+    except Exception as e:
+        print("❌ Error in /crop-predict:", str(e))
+        return jsonify({"error": "Server error"}), 500
 
 if __name__ == '__main__':
-    app.run(port=7000)
+    port = int(os.environ.get("PORT", 5000))  # ✅ Render needs this
+    app.run(host="0.0.0.0", port=port)

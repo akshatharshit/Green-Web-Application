@@ -26,7 +26,7 @@ const DiseasePredictor = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://render.com/docs/web-services#port-binding/disease-predict", // your backend URL
+        "https://green-web-application-1.onrender.com/disease-predict", // your backend URL
         // "http://127.0.0.1:7000/disease-predict", // your backend URL
         formData,
         {
