@@ -10,6 +10,7 @@ import blogReducer from './slices/blogSlice'
 import submissionReducer from './slices/submissionSlice'
 import testimonialReducer from './slices/testimonialSlice'
 import upiReducer from './slices/upiSlice'
+import geminiReducer from './slices/geminiSlice';
 
 export const store = configureStore({
   reducer: {
@@ -23,5 +24,6 @@ export const store = configureStore({
     submission: submissionReducer,
     testimonial: testimonialReducer,
     upi: upiReducer,
+    chat: geminiReducer,
   },
 });

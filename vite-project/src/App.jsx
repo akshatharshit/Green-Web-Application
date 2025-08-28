@@ -25,6 +25,8 @@ import UpiForm from './components/upi/UpiForm';
 import UpiList from './components/upi/UpiList'
 import WeatherTemp from './components/weatherTemp/WeatherTemp';
 import DiseasePredictor from './components/CROP/DiseasePredictor';
+import ImageGenerator from './components/TEST/ImageGenerator';
+import CropPredictor from './components/CROP/CropPredictor';
 
 
 function App() {
@@ -55,6 +57,8 @@ function App() {
           <Route path='/upiId/edit' element={<UpiList/>} />
           <Route path='/weather' element={<WeatherTemp/>} />
           <Route path='/disease' element={<DiseasePredictor/>} />
+          <Route path='/img' element={<ImageGenerator/>} />
+          <Route path='/crop' element={<CropPredictor/>} />
           
         </Routes>
       </MainLayout>

@@ -39,8 +39,23 @@ function Add() {
             >
               Get AI Assistance
             </button>
+
+            <button
+              className="px-6 py-3 ml-8 bg-green-700 text-white rounded-xl hover:bg-green-800 transition-shadow shadow-lg"
+              onClick={() => {
+                if (token) {
+                  navigate("/img");
+                } else {
+                  navigate("/auth/login");
+                }
+              }}
+            >
+              Generate AI Images
+            </button>
           </div>
         </motion.div>
+
+        
 
         
         <motion.div

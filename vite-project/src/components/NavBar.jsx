@@ -117,8 +117,16 @@ function NavBar() {
           <span>Crop Disease</span>
         </Button>
 
-
         <Button
+          className="hover:text-green-700 flex items-center space-x-2"
+          onClick={() => navigate("/crop")}
+        >
+          <BookCopy className="h-5 w-5" />
+          <span>Soil Crop</span>
+        </Button>
+
+
+        {/* <Button
           className="hover:text-green-700 flex items-center space-x-2"
           onClick={() => navigate("/about")}
         >
@@ -132,15 +140,15 @@ function NavBar() {
         >
           <SquareLibrary className="h-5 w-5" />
           <span>Contact</span>
-        </Button>
+        </Button> */}
 
         {token && (
           <Button
             className="hover:text-green-700 flex items-center space-x-2"
-            onClick={() => navigate("/ai")}
+            onClick={() => navigate("/img")}
           >
             <Bot className="h-5 w-5" />
-            <span>AI</span>
+            <span>AI Image</span>
           </Button>
         )}
 
