@@ -4,6 +4,16 @@ import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import {
+  FaCloudSun,
+  FaWind,
+  FaTint,
+  FaLeaf,
+  FaMapMarkerAlt,
+  FaSun,
+  FaCloudRain,
+  FaRegClock,
+} from "react-icons/fa";
 
 const key = import.meta.env.VITE_WEATHER_API_KEY;
 
@@ -31,8 +41,6 @@ export default function LocationWeather() {
         );
 
         setForecast(groupForecastByDay(forecastRes.data.list));
-
-        // Using the same `forecastRes` to extract the hourly data
         setHourlyForecast(forecastRes.data.list);
       } catch (err) {
         console.error("Could not fetch weather:", err);
@@ -64,8 +72,8 @@ export default function LocationWeather() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <Loader2 className="animate-spin w-8 h-8 text-green-600" />
+      <div className="flex justify-center items-center h-screen bg-gradient-to-br from-green-50 via-emerald-100 to-lime-100">
+        <Loader2 className="animate-spin w-10 h-10 text-green-600" />
       </div>
     );
   }
@@ -74,43 +82,51 @@ export default function LocationWeather() {
 
   return (
     <motion.div
-      className="w-full max-w-4xl mx-auto mt-10 mb-12 grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 px-4"
+      className="w-full max-w-5xl mx-auto mt-10 mb-12 grid grid-cols-1 lg:grid-cols-2 gap-6 px-4"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
     >
       {/* Left - Current Weather */}
       <motion.div
-        className="bg-green-100 shadow-md rounded-lg p-4 lg:p-5"
+        className="bg-gradient-to-br from-green-100 via-lime-50 to-emerald-100 shadow-xl rounded-2xl p-6 flex flex-col justify-between"
         whileHover={{ scale: 1.03 }}
         transition={{ type: "spring", stiffness: 300 }}
       >
         <div className="flex justify-between items-center mb-3">
-          <div className="text-lg lg:text-xl font-semibold text-green-800">
+          <div className="text-xl font-bold text-green-800 flex items-center gap-2">
+            <FaMapMarkerAlt className="text-green-500" />
             {weather.name}
           </div>
           <img
             src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
             alt="weather icon"
-            className="w-14 h-14"
+            className="w-16 h-16"
           />
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3">
           <div>
-            <p className="text-sm text-blue-700">{weather.weather[0].main}</p>
-            <p className="text-2xl font-semibold text-green-900">{weather.main.temp}°C</p>
-            <p className="text-xs text-gray-600">Wind: {weather.wind.speed} m/s</p>
-            <p className="text-xs text-gray-600">Humidity: {weather.main.humidity}%</p>
-            <p className="text-xs text-gray-600">Pressure: {weather.main.pressure} hPa</p>
+            <p className="text-sm text-blue-700 flex items-center gap-1">
+              <FaCloudSun className="text-yellow-400" /> {weather.weather[0].main}
+            </p>
+            <p className="text-3xl font-bold text-green-900">{weather.main.temp}°C</p>
+            <p className="text-xs text-gray-600 flex items-center gap-1">
+              <FaWind className="text-green-400" /> Wind: {weather.wind.speed} m/s
+            </p>
+            <p className="text-xs text-gray-600 flex items-center gap-1">
+              <FaTint className="text-blue-400" /> Humidity: {weather.main.humidity}%
+            </p>
+            <p className="text-xs text-gray-600 flex items-center gap-1">
+              <FaLeaf className="text-green-500" /> Pressure: {weather.main.pressure} hPa
+            </p>
           </div>
         </div>
-
         <div className="flex justify-end mt-4">
           <button
             onClick={() => navigate("/weather")}
-            className="bg-green-600 text-white px-3 py-2 rounded-md shadow hover:bg-green-700 transition hover:scale-105 text-sm"
+            className="bg-green-600 text-white px-4 py-2 rounded-xl shadow hover:bg-green-700 transition hover:scale-105 text-sm font-semibold flex items-center gap-2"
           >
+            <FaCloudRain className="text-blue-200" />
             Check Weather
           </button>
         </div>
@@ -118,18 +134,18 @@ export default function LocationWeather() {
 
       {/* Right - Forecast */}
       <motion.div
-        className="bg-white shadow-md rounded-lg p-4 lg:p-5"
+        className="bg-white shadow-xl rounded-2xl p-6"
         whileHover={{ scale: 1.03 }}
         transition={{ type: "spring", stiffness: 300 }}
       >
-        <h3 className="text-md lg:text-lg font-semibold text-center text-green-700 mb-4">
-          Upcoming Weather
+        <h3 className="text-lg font-bold text-center text-green-700 mb-4 flex items-center justify-center gap-2">
+          <FaSun className="text-yellow-400" /> Upcoming Weather
         </h3>
         <div className="flex flex-col lg:flex-row justify-between gap-4">
           {forecast.map((day, idx) => (
             <motion.div
               key={idx}
-              className="text-center flex-1"
+              className="text-center flex-1 bg-green-50 rounded-xl p-3 shadow hover:shadow-lg transition-all"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
@@ -137,9 +153,9 @@ export default function LocationWeather() {
               <img
                 src={`https://openweathermap.org/img/wn/${day.icon}@2x.png`}
                 alt={day.condition}
-                className="w-10 h-10 mx-auto"
+                className="w-12 h-12 mx-auto"
               />
-              <p className="text-lg text-blue-800">{day.temp}°C</p>
+              <p className="text-xl text-blue-800 font-bold">{day.temp}°C</p>
               <p className="text-xs text-gray-500">{day.condition}</p>
               <p className="text-xs text-gray-500">
                 {day.minTemp}°C - {day.maxTemp}°C
@@ -151,24 +167,30 @@ export default function LocationWeather() {
 
       {/* Third - Map */}
       <motion.div
-        className="bg-white shadow-md rounded-lg p-4 lg:p-5 mt-4"
+        className="bg-white shadow-xl rounded-2xl p-6 mt-4"
         whileHover={{ scale: 1.03 }}
         transition={{ type: "spring", stiffness: 300 }}
       >
-        <h3 className="text-md lg:text-lg font-semibold text-center text-green-700 mb-4">
-          Your Current Location
+        <h3 className="text-lg font-bold text-center text-green-700 mb-4 flex items-center justify-center gap-2">
+          <FaMapMarkerAlt className="text-green-500" /> Your Current Location
         </h3>
         {location && (
           <MapContainer
             center={location}
             zoom={13}
-            style={{ height: "200px", borderRadius: "8px" }}
+            style={{ height: "220px", borderRadius: "12px" }}
+            className="overflow-hidden"
           >
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <Marker position={location}>
-              <Popup>Your current location</Popup>
+              <Popup>
+                <span className="text-green-700 font-semibold">
+                  <FaLeaf className="inline mr-1" />
+                  You are here!
+                </span>
+              </Popup>
             </Marker>
           </MapContainer>
         )}
@@ -176,15 +198,15 @@ export default function LocationWeather() {
 
       {/* Fourth - Hourly Weather */}
       <motion.div
-        className="bg-white shadow-md rounded-lg p-4 lg:p-5 mt-4"
+        className="bg-white shadow-xl rounded-2xl p-6 mt-4"
         whileHover={{ scale: 1.03 }}
         transition={{ type: "spring", stiffness: 300 }}
       >
-        <h3 className="text-md lg:text-lg font-semibold text-center text-green-700 mb-4">
-          Hourly Weather for Today
+        <h3 className="text-lg font-bold text-center text-green-700 mb-4 flex items-center justify-center gap-2">
+          <FaRegClock className="text-green-500" /> Hourly Weather for Today
         </h3>
         {hourlyForecast.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {hourlyForecast.slice(0, 8).map((hour, idx) => {
               const date = new Date(hour.dt * 1000);
               const time = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -192,7 +214,7 @@ export default function LocationWeather() {
               return (
                 <motion.div
                   key={idx}
-                  className="text-center flex-1"
+                  className="text-center flex-1 bg-green-50 rounded-xl p-2 shadow hover:shadow-lg transition-all"
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
@@ -217,11 +239,34 @@ export default function LocationWeather() {
             })}
           </div>
         ) : (
-          <p>No hourly data available</p>
+          <p className="text-center text-gray-500">No hourly data available</p>
         )}
       </motion.div>
 
+      {/* Agriculture Tip */}
+      <motion.div
+        className="col-span-1 lg:col-span-2 bg-gradient-to-r from-green-100 via-lime-100 to-emerald-100 border border-green-200 rounded-xl shadow p-6 flex items-center gap-4 mt-6 animate-fade-in"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+      >
+        <FaLeaf className="text-green-500 text-2xl animate-bounce" />
+        <span className="text-green-700 font-semibold text-lg">
+          Tip: Monitor weather for smarter farming and healthier crops!
+        </span>
+      </motion.div>
 
-    </motion.div >
+      <style>
+        {`
+          .animate-fade-in {
+            animation: fade-in 0.7s;
+          }
+          @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px);}
+            to { opacity: 1; transform: translateY(0);}
+          }
+        `}
+      </style>
+    </motion.div>
   );
 }
