@@ -3,12 +3,26 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { sendMessageToGemini } from "../../slices/geminiSlice";
 import { Loader2, Leaf, AlertTriangle, ShieldCheck } from "lucide-react";
+import {
+  FaSeedling,
+  FaTractor,
+  FaCloudSunRain,
+  FaWater,
+  FaRegSmileBeam,
+  FaInfoCircle,
+  FaRecycle,
+  FaBug,
+  FaHandsHelping,
+  FaSun,
+  FaCheckCircle,
+} from "react-icons/fa";
 
 const DiseasePredictor = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
+  const [showTips, setShowTips] = useState(false);
 
   const dispatch = useDispatch();
   const { messages, loading: giminiLoading, error: giminiError } =
@@ -100,12 +114,37 @@ Please provide a farmer-friendly explanation in **two parts**:
   return (
     <div className="min-h-screen flex flex-col items-center py-10 px-4 bg-gradient-to-br from-green-50 via-emerald-100 to-lime-100">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md rounded-2xl shadow-lg px-6 py-4 mb-8 w-full max-w-3xl mx-auto flex items-center gap-2 animate-fade-in">
-        <Leaf className="w-8 h-8 text-green-600" />
-        <h1 className="text-4xl font-bold text-green-700 tracking-tight">
-          Crop Disease Predictor
-        </h1>
+      <header className="sticky top-0 z-10 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg px-6 py-6 mb-8 w-full max-w-3xl mx-auto flex flex-col items-center gap-2 animate-fade-in border-b-2 border-green-200">
+        <div className="flex items-center gap-3">
+          <Leaf className="w-10 h-10 text-green-600 animate-bounce" />
+          <h1 className="text-4xl font-extrabold text-green-700 tracking-tight drop-shadow-lg">
+            Crop Disease Predictor
+          </h1>
+          <FaTractor className="text-yellow-500 text-3xl animate-pulse" />
+        </div>
+        <div className="flex gap-4 mt-2">
+          <FaSeedling className="text-green-500 text-2xl animate-bounce" />
+          <FaCloudSunRain className="text-blue-400 text-2xl" />
+          <FaWater className="text-blue-500 text-2xl animate-pulse" />
+          <FaSun className="text-yellow-400 text-2xl animate-spin-slow" />
+        </div>
+        <div className="w-24 h-1 bg-green-300 rounded-full mt-3" />
+        <p className="text-green-700/80 mt-2 text-lg font-medium text-center">
+          Upload a crop image and get instant disease analysis with AI-powered tips!
+        </p>
       </header>
+
+      {/* Agriculture Banner */}
+      <div className="flex items-center justify-center gap-6 py-4 bg-gradient-to-r from-green-100 via-lime-100 to-emerald-100 border-b border-green-200 rounded-xl mb-8 shadow">
+        <FaTractor className="text-yellow-600 text-2xl animate-pulse" />
+        <span className="font-semibold text-green-700 text-lg">Healthy Crops</span>
+        <FaSeedling className="text-green-500 text-2xl animate-bounce" />
+        <span className="font-semibold text-green-700 text-lg">Soil Care</span>
+        <FaWater className="text-blue-500 text-2xl animate-pulse" />
+        <span className="font-semibold text-green-700 text-lg">Irrigation</span>
+        <FaRecycle className="text-green-400 text-2xl animate-spin-slow" />
+        <span className="font-semibold text-green-700 text-lg">Crop Rotation</span>
+      </div>
 
       {/* Upload Form */}
       <form
@@ -117,9 +156,10 @@ Please provide a farmer-friendly explanation in **two parts**:
             type="file"
             accept="image/*"
             onChange={handleFileChange}
-            className="peer border border-green-300 bg-white/70 rounded-lg w-full p-4 pt-6 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="peer border border-green-300 bg-white/80 rounded-lg w-full p-4 pt-6 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-400 shadow"
           />
-          <label className="absolute left-4 top-2 text-green-800 text-base font-medium transition-all peer-focus:text-green-600 peer-focus:top-1 peer-valid:top-1 peer-valid:text-green-600 pointer-events-none">
+          <label className="absolute left-4 top-2 text-green-800 text-base font-semibold transition-all peer-focus:text-green-600 peer-focus:top-1 peer-valid:top-1 peer-valid:text-green-600 flex items-center gap-2 pointer-events-none">
+            <FaInfoCircle className="text-green-500" />
             Upload Crop Image
           </label>
         </div>
@@ -135,22 +175,27 @@ Please provide a farmer-friendly explanation in **two parts**:
       </form>
 
       {/* Divider */}
-      <div className="w-16 h-1 bg-green-300 rounded-full my-8 animate-fade-in" />
+      <div className="w-20 h-1 bg-green-300 rounded-full my-8 animate-fade-in" />
 
       {/* Backend Result */}
       {result && (
-        <section className="mt-4 max-w-5xl w-full glass-card bg-white/80 p-8 rounded-2xl shadow-2xl border border-green-200 animate-fade-in">
+        <section className="mt-4 max-w-5xl w-full glass-card bg-white/90 p-8 rounded-2xl shadow-2xl border border-green-200 animate-fade-in">
           <h2 className="text-2xl font-bold text-green-800 mb-4 flex items-center gap-2">
             <AlertTriangle className="text-yellow-500" /> Disease Prediction
           </h2>
-          <div className="mb-2">
-            <span className="font-semibold">🌾 Crop:</span> {result.Crop}
+          <div className="mb-2 flex items-center gap-2">
+            <FaSeedling className="text-green-500" />
+            <span className="font-semibold">Crop:</span> {result.Crop}
+          </div>
+          <div className="mb-4 flex items-center gap-2">
+            <FaBug className="text-red-500" />
+            <span className="font-semibold">Disease:</span> {result.Disease}
           </div>
           <div className="mb-4">
-            <span className="font-semibold">🛑 Disease:</span> {result.Disease}
-          </div>
-          <div className="mb-4">
-            <h3 className="font-semibold text-green-700 mb-2">🌍 Cause:</h3>
+            <h3 className="font-semibold text-green-700 mb-2 flex items-center gap-2">
+              <FaCloudSunRain className="text-blue-400" />
+              Cause:
+            </h3>
             <ul className="list-disc list-inside space-y-1 text-gray-700">
               {result.Cause.map((c, idx) => (
                 <li key={idx}>{c}</li>
@@ -158,7 +203,7 @@ Please provide a farmer-friendly explanation in **two parts**:
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold text-green-700 mb-2 flex items-center gap-1">
+            <h3 className="font-semibold text-green-700 mb-2 flex items-center gap-2">
               <ShieldCheck className="text-green-600" /> Prevention / Cure:
             </h3>
             <ul className="list-disc list-inside space-y-1 text-gray-700">
@@ -166,6 +211,13 @@ Please provide a farmer-friendly explanation in **two parts**:
                 <li key={idx}>{p}</li>
               ))}
             </ul>
+          </div>
+          <div className="mt-6 flex items-center gap-4 justify-center">
+            <FaHandsHelping className="text-green-600 text-2xl" />
+            <span className="text-green-700 font-semibold">
+              For best results, follow the prevention tips and consult your local agricultural expert!
+            </span>
+            <FaCheckCircle className="text-green-500 text-2xl" />
           </div>
         </section>
       )}
@@ -183,9 +235,10 @@ Please provide a farmer-friendly explanation in **two parts**:
             messages[messages.length - 1].text
           );
           return (
-            <section className="mt-8 max-w-7xl w-full glass-card bg-white/80 p-8 rounded-2xl shadow-2xl border border-purple-200 animate-fade-in">
-              <h2 className="text-2xl font-bold text-purple-700 mb-6">
-                🌟 Gemini Explanation
+            <section className="mt-8 max-w-7xl w-full glass-card bg-white/90 p-8 rounded-2xl shadow-2xl border border-purple-200 animate-fade-in">
+              <h2 className="text-2xl font-bold text-purple-700 mb-6 flex items-center gap-2">
+                <FaRegSmileBeam className="text-green-500" />
+                Gemini Explanation
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
@@ -200,6 +253,64 @@ Please provide a farmer-friendly explanation in **two parts**:
             </section>
           );
         })()}
+
+      {/* Agriculture Tips Section */}
+      <div className="mt-10 mx-8 p-6 bg-gradient-to-r from-lime-50 via-green-50 to-emerald-50 border border-green-200 rounded-2xl shadow-inner animate-fade-in max-w-3xl w-full">
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-xl font-bold text-green-700 flex items-center gap-2">
+            <FaRegSmileBeam className="text-green-500" />
+            Agriculture Tips
+          </h4>
+          <button
+            className="text-green-600 hover:text-green-800 font-semibold flex items-center gap-1"
+            onClick={() => setShowTips((prev) => !prev)}
+          >
+            {showTips ? "Hide Tips" : "Show More"}
+          </button>
+        </div>
+        <ul className="list-disc list-inside space-y-2 text-green-900 text-base">
+          <li>
+            <FaSeedling className="inline mr-2 text-green-500" />
+            Regularly check crops for disease symptoms.
+          </li>
+          <li>
+            <FaWater className="inline mr-2 text-blue-500" />
+            Use clean water for irrigation to prevent fungal infections.
+          </li>
+          <li>
+            <FaTractor className="inline mr-2 text-yellow-600" />
+            Remove and destroy infected plants to stop spread.
+          </li>
+          <li>
+            <FaCloudSunRain className="inline mr-2 text-blue-400" />
+            Monitor weather and adjust care accordingly.
+          </li>
+          <li>
+            <Leaf className="inline mr-2 text-green-600" />
+            Rotate crops to maintain healthy soil.
+          </li>
+          {showTips && (
+            <>
+              <li>
+                <FaRecycle className="inline mr-2 text-green-400" />
+                Compost organic waste to enrich soil naturally.
+              </li>
+              <li>
+                <FaBug className="inline mr-2 text-red-500" />
+                Use natural pest control methods to reduce chemical usage.
+              </li>
+              <li>
+                <FaHandsHelping className="inline mr-2 text-green-600" />
+                Connect with local farming communities for shared knowledge.
+              </li>
+              <li>
+                <FaSun className="inline mr-2 text-yellow-400" />
+                Ensure crops get enough sunlight for healthy growth.
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
 
       {/* Raw Backend JSON */}
       {result && (
@@ -226,8 +337,12 @@ Please provide a farmer-friendly explanation in **two parts**:
       )}
 
       {/* Footer */}
-      <footer className="text-xs text-green-700 text-center py-6 opacity-70 mt-12">
-        Powered by Green | AI by Gemini & HuggingFace
+      <footer className="text-xs text-green-700 text-center py-6 opacity-70 mt-12 border-t border-green-200">
+        <span className="flex items-center justify-center gap-2">
+          <Leaf className="text-green-600" />
+          Powered by Green | AI by Gemini & HuggingFace
+          <FaTractor className="text-yellow-600" />
+        </span>
       </footer>
 
       {/* Animations & Glassmorphism */}
@@ -241,10 +356,13 @@ Please provide a farmer-friendly explanation in **two parts**:
             animation: fade-in 0.7s;
           }
           .glass-card {
-            background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(8px);
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
             border: 1px solid rgba(255,255,255,0.18);
+          }
+          .animate-spin-slow {
+            animation: spin 3s linear infinite;
           }
         `}
       </style>
