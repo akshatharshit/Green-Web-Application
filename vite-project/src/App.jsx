@@ -27,6 +27,7 @@ import WeatherTemp from './components/weatherTemp/WeatherTemp';
 import DiseasePredictor from './components/CROP/DiseasePredictor';
 import ImageGenerator from './components/TEST/ImageGenerator';
 import CropPredictor from './components/CROP/CropPredictor';
+import FertilizerPredictor from './components/CROP/FertilizerPredictor';
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
           <Route path='/disease' element={<DiseasePredictor/>} />
           <Route path='/img' element={<ImageGenerator/>} />
           <Route path='/crop' element={<CropPredictor/>} />
+          <Route path='/FertilizerPredictor' element={<FertilizerPredictor/>} />
           
         </Routes>
       </MainLayout>

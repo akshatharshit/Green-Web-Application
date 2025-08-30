@@ -40,7 +40,7 @@ function NavBar() {
   };
 
   const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen); 
+    setSidebarOpen(!sidebarOpen);
   };
 
   return (
@@ -99,7 +99,7 @@ function NavBar() {
 
 
         )}
-        
+
 
         <Button
           className="hover:text-green-700 flex items-center space-x-2"
@@ -115,6 +115,15 @@ function NavBar() {
         >
           <BookCopy className="h-5 w-5" />
           <span>Crop Disease</span>
+        </Button>
+
+
+        <Button
+          className="hover:text-green-700 flex items-center space-x-2"
+          onClick={() => navigate("/FertilizerPredictor")}
+        >
+          <BookCopy className="h-5 w-5" />
+          <span>Fertilizer</span>
         </Button>
 
         <Button
@@ -396,9 +405,9 @@ const navStyle = {
   zIndex: 10,
 
   // Elevation effect
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)', 
-  borderBottom: '1px solid rgba(0, 0, 0, 0.05)', 
-  backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+  borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
+  backgroundColor: 'rgba(255, 255, 255, 0.95)',
 
   // Optional: smooth transitions
   transition: 'box-shadow 0.3s ease, background-color 0.3s ease',
