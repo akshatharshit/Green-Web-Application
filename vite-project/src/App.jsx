@@ -28,6 +28,7 @@ import DiseasePredictor from './components/CROP/DiseasePredictor';
 import ImageGenerator from './components/TEST/ImageGenerator';
 import CropPredictor from './components/CROP/CropPredictor';
 import FertilizerPredictor from './components/CROP/FertilizerPredictor';
+import LandConverterChat from './components/CROP/LandConverterChat';
 
 
 function App() {
@@ -63,6 +64,7 @@ function App() {
           <Route path='/FertilizerPredictor' element={<FertilizerPredictor/>} />
           
         </Routes>
+      <LandConverterChat />
       </MainLayout>
       <ToastContainer/>
     </Router>
