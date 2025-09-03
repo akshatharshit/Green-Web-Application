@@ -177,8 +177,6 @@
 
 
 
-
-#new One
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
@@ -214,26 +212,27 @@ disease_classes = [
 
 # ------------------ Paths ------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-disease_model_path = os.path.join(BASE_DIR, "models/plant_disease_model.pth")
+DISEASE_MODEL_FILE = os.path.join(BASE_DIR, "models/plant_disease_model.pth")
+CROP_MODEL_FILE = os.path.join(BASE_DIR, "models/crop.pkl")
+FERT_CAT_FILE = os.path.join(BASE_DIR, "models/categorical_model.joblib")
+FERT_NUM_FILE = os.path.join(BASE_DIR, "models/numerical_model.joblib")
+FERT_PREP_FILE = os.path.join(BASE_DIR, "models/preprocessor.joblib")
 
-# ------------------ Lazy Model Loading ------------------
+# ------------------ Disease Model ------------------
 disease_model = None
-transform = transforms.Compose([
-    transforms.Resize(256),
-    transforms.ToTensor(),
-])
+transform = transforms.Compose([transforms.Resize(256), transforms.ToTensor()])
 
 def load_disease_model():
     global disease_model
     if disease_model is None:
-        print("📦 Loading disease model from:", disease_model_path)
-        if not os.path.exists(disease_model_path):
+        if not os.path.exists(DISEASE_MODEL_FILE):
             raise FileNotFoundError(
-                f"❌ Model file not found at {disease_model_path}. "
-                "Did you run `git lfs install && git lfs pull`?"
+                f"❌ Disease model not found at {DISEASE_MODEL_FILE}.\n"
+                "Run `git lfs install && git lfs pull` to download the models."
             )
+        print("📦 Loading disease model...")
         model = ResNet9(3, len(disease_classes))
-        model.load_state_dict(torch.load(disease_model_path, map_location=torch.device("cpu")))
+        model.load_state_dict(torch.load(DISEASE_MODEL_FILE, map_location=torch.device("cpu")))
         model.eval()
         disease_model = model
     return disease_model
@@ -268,13 +267,16 @@ fertilizer_mapping = {
 def load_fertilizer_models():
     global fert_cat_model, fert_num_model, preprocessor
     if fert_cat_model is None or fert_num_model is None or preprocessor is None:
-        try:
-            print("📦 Loading fertilizer models...")
-            fert_cat_model = joblib.load(os.path.join(BASE_DIR, "models/categorical_model.joblib"))
-            fert_num_model = joblib.load(os.path.join(BASE_DIR, "models/numerical_model.joblib"))
-            preprocessor = joblib.load(os.path.join(BASE_DIR, "models/preprocessor.joblib"))
-        except Exception as e:
-            print("⚠️ Fertilizer models not loaded:", str(e))
+        for file_path in [FERT_CAT_FILE, FERT_NUM_FILE, FERT_PREP_FILE]:
+            if not os.path.exists(file_path):
+                raise FileNotFoundError(
+                    f"❌ Fertilizer model not found at {file_path}.\n"
+                    "Run `git lfs install && git lfs pull` to download the models."
+                )
+        print("📦 Loading fertilizer models...")
+        fert_cat_model = joblib.load(FERT_CAT_FILE)
+        fert_num_model = joblib.load(FERT_NUM_FILE)
+        preprocessor = joblib.load(FERT_PREP_FILE)
     return fert_cat_model, fert_num_model, preprocessor
 
 # ------------------ Flask App ------------------
@@ -301,63 +303,49 @@ def disease_prediction():
     try:
         if 'file' not in request.files:
             return jsonify({"error": "No file uploaded"}), 400
-
         file = request.files['file']
         img = file.read()
         prediction = predict_image(img)
-        prediction = disease_dic[prediction]
+        prediction = disease_dic.get(prediction, {"error": "Unknown disease"})
         return jsonify(prediction)
     except Exception as e:
         print("❌ Error in /disease-predict:", str(e))
-        return jsonify({"error": "something went wrong!"}), 500
+        return jsonify({"error": str(e)}), 500
 
 # ------------------ Crop Prediction ------------------
 @app.route('/crop-predict', methods=['POST'])
 def crop_prediction():
     try:
-        crop_model_path = os.path.join(BASE_DIR, "models/crop.pkl")
-        print("📦 Loading crop model from:", crop_model_path)
-        crop_model = joblib.load(crop_model_path)
-
-        data = np.array([[
-            request.json['nitrogen'],
-            request.json['phosphorous'],
-            request.json['pottasium'],
-            request.json['temperature'],
-            request.json['humidity'],
-            request.json['ph'],
-            request.json['rainfall']
-        ]])
-        my_prediction = crop_model.predict(data)
-        return jsonify({"prediction": my_prediction[0]})
+        if not os.path.exists(CROP_MODEL_FILE):
+            raise FileNotFoundError(
+                f"❌ Crop model not found at {CROP_MODEL_FILE}.\n"
+                "Run `git lfs install && git lfs pull`."
+            )
+        crop_model = joblib.load(CROP_MODEL_FILE)
+        data = np.array([[request.json[k] for k in ['nitrogen','phosphorous','pottasium','temperature','humidity','ph','rainfall']]])
+        prediction = crop_model.predict(data)
+        return jsonify({"prediction": prediction[0]})
     except Exception as e:
         print("❌ Error in /crop-predict:", str(e))
-        return jsonify({"error": "Something went wrong on server."}), 500
+        return jsonify({"error": str(e)}), 500
 
 # ------------------ Fertilizer Prediction ------------------
 @app.route('/predict/fertilizer', methods=['POST'])
 def predict_fertilizer():
     cat_model, num_model, prep = load_fertilizer_models()
-    if cat_model is None or num_model is None or prep is None:
-        return jsonify({"error": "Fertilizer models not loaded"}), 500
-
     try:
         df = pd.DataFrame([request.json])
         X = prep.transform(df)
         cat_pred = cat_model.predict(X).ravel()
         num_pred = num_model.predict(X).ravel()
-
-        fert_types = [
-            fertilizer_mapping.get(int(code), f"Unknown ({code})")
-            for code in cat_pred
-        ]
+        fert_types = [fertilizer_mapping.get(int(code), f"Unknown ({code})") for code in cat_pred]
         return jsonify({
             "fertilizer_types": fert_types,
             "fertilizer_amount": float(num_pred[0])
         })
     except Exception as e:
         print("❌ Error in /predict/fertilizer:", str(e))
-        return jsonify({"error": "Failed to predict fertilizer"}), 500
+        return jsonify({"error": str(e)}), 500
 
 # ------------------ Entrypoint ------------------
 if __name__ == "__main__":
