@@ -346,5 +346,8 @@ def predict_fertilizer():
         "fertilizer_amount": float(num_pred[0])
     })
 
-if __name__ == '__main__':
-    app.run(port=7000, host="0.0.0.0")
+if __name__ == "__main__":
+    import os
+    port = int(os.environ.get("PORT", 7000))  # use Render's PORT, fallback to 5000 locally
+    app.run(host="0.0.0.0", port=port)
+
