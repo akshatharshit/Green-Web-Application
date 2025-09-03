@@ -179,7 +179,6 @@
 
 
 #new One
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
@@ -227,6 +226,7 @@ transform = transforms.Compose([
 def load_disease_model():
     global disease_model
     if disease_model is None:
+        print("📦 Loading disease model from:", disease_model_path)
         if not os.path.exists(disease_model_path):
             raise FileNotFoundError(
                 f"❌ Model file not found at {disease_model_path}. "
@@ -269,6 +269,7 @@ def load_fertilizer_models():
     global fert_cat_model, fert_num_model, preprocessor
     if fert_cat_model is None or fert_num_model is None or preprocessor is None:
         try:
+            print("📦 Loading fertilizer models...")
             fert_cat_model = joblib.load(os.path.join(BASE_DIR, "models/categorical_model.joblib"))
             fert_num_model = joblib.load(os.path.join(BASE_DIR, "models/numerical_model.joblib"))
             preprocessor = joblib.load(os.path.join(BASE_DIR, "models/preprocessor.joblib"))
@@ -290,13 +291,17 @@ def check():
 
 @app.route('/check-post', methods=['POST'])
 def check_post():
-    Name = request.json.get('name', None)
-    return jsonify({"name": Name})
+    data = request.get_json(force=True)
+    name = data.get('name', None)
+    return jsonify({"name": name})
 
 # ------------------ Disease Prediction ------------------
 @app.route('/disease-predict', methods=['POST'])
 def disease_prediction():
     try:
+        if 'file' not in request.files:
+            return jsonify({"error": "No file uploaded"}), 400
+
         file = request.files['file']
         img = file.read()
         prediction = predict_image(img)
@@ -304,13 +309,16 @@ def disease_prediction():
         return jsonify(prediction)
     except Exception as e:
         print("❌ Error in /disease-predict:", str(e))
-        return jsonify({"err": "something went wrong!"})
+        return jsonify({"error": "something went wrong!"}), 500
 
 # ------------------ Crop Prediction ------------------
 @app.route('/crop-predict', methods=['POST'])
 def crop_prediction():
     try:
-        crop_model = joblib.load(os.path.join(BASE_DIR, "models/crop.pkl"))
+        crop_model_path = os.path.join(BASE_DIR, "models/crop.pkl")
+        print("📦 Loading crop model from:", crop_model_path)
+        crop_model = joblib.load(crop_model_path)
+
         data = np.array([[
             request.json['nitrogen'],
             request.json['phosphorous'],
@@ -324,14 +332,14 @@ def crop_prediction():
         return jsonify({"prediction": my_prediction[0]})
     except Exception as e:
         print("❌ Error in /crop-predict:", str(e))
-        return jsonify({"error": "Something went wrong on server."})
+        return jsonify({"error": "Something went wrong on server."}), 500
 
 # ------------------ Fertilizer Prediction ------------------
 @app.route('/predict/fertilizer', methods=['POST'])
 def predict_fertilizer():
     cat_model, num_model, prep = load_fertilizer_models()
     if cat_model is None or num_model is None or prep is None:
-        return jsonify({"error": "Fertilizer models not loaded"})
+        return jsonify({"error": "Fertilizer models not loaded"}), 500
 
     try:
         df = pd.DataFrame([request.json])
@@ -349,9 +357,10 @@ def predict_fertilizer():
         })
     except Exception as e:
         print("❌ Error in /predict/fertilizer:", str(e))
-        return jsonify({"error": "Failed to predict fertilizer"})
+        return jsonify({"error": "Failed to predict fertilizer"}), 500
 
 # ------------------ Entrypoint ------------------
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # ✅ works on Render
-    app.run(host="0.0.0.0", port=port)
+    port = int(os.environ.get("PORT", 5000))
+    print(f"🚀 Starting Flask on port {port}")
+    app.run(host="0.0.0.0", port=port, debug=True)
