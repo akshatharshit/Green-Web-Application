@@ -350,5 +350,40 @@ def predict_fertilizer():
 # ------------------ Entrypoint ------------------
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    print(f"🚀 Starting Flask on port {port}")
-    app.run(host="0.0.0.0", port=port, debug=True)
+    print(f"🚀 Starting Flask on port {port} (HTTPS)")
+
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    cert_file = os.path.join(BASE_DIR, "cert.pem")
+    key_file = os.path.join(BASE_DIR, "key.pem")
+
+    # Automatically generate self-signed cert if missing
+    if not os.path.exists(cert_file) or not os.path.exists(key_file):
+        print("⚠️ SSL certificate not found. Generating self-signed certificate...")
+        from OpenSSL import crypto
+
+        # Certificate details
+        k = crypto.PKey()
+        k.generate_key(crypto.TYPE_RSA, 2048)
+        cert = crypto.X509()
+        cert.get_subject().C = "IN"
+        cert.get_subject().ST = "State"
+        cert.get_subject().L = "City"
+        cert.get_subject().O = "Organization"
+        cert.get_subject().OU = "Unit"
+        cert.get_subject().CN = "localhost"
+        cert.set_serial_number(1000)
+        cert.gmtime_adj_notBefore(0)
+        cert.gmtime_adj_notAfter(365*24*60*60)  # valid 1 year
+        cert.set_issuer(cert.get_subject())
+        cert.set_pubkey(k)
+        cert.sign(k, "sha256")
+
+        # Write cert and key
+        with open(cert_file, "wb") as f:
+            f.write(crypto.dump_certificate(crypto.FILETYPE_PEM, cert))
+        with open(key_file, "wb") as f:
+            f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, k))
+        print("✅ Self-signed certificate generated.")
+
+    # Run Flask with HTTPS
+    app.run(host="0.0.0.0", port=port, debug=True, ssl_context=(cert_file, key_file))

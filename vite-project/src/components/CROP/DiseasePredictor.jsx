@@ -47,7 +47,7 @@ const DiseasePredictor = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://192.168.1.53:5000/disease-predict",
+        "https://192.168.1.53:5000/disease-predict",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
