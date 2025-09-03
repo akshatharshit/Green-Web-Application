@@ -181,7 +181,6 @@
 #new One
 
 from flask import Flask, request, jsonify
-from markupsafe import Markup
 from flask_cors import CORS
 import numpy as np
 import pandas as pd
@@ -214,46 +213,43 @@ disease_classes = [
     "Tomato___Tomato_mosaic_virus", "Tomato___healthy"
 ]
 
-# ------------------ Model Loading ------------------
+# ------------------ Paths ------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
 disease_model_path = os.path.join(BASE_DIR, "models/plant_disease_model.pth")
-if not os.path.exists(disease_model_path):
-    raise FileNotFoundError(
-        f"❌ Model file not found at {disease_model_path}. "
-        "Did you run `git lfs install && git lfs pull`?"
-    )
 
-# Load once at startup
-disease_model = ResNet9(3, len(disease_classes))
-disease_model.load_state_dict(torch.load(disease_model_path, map_location=torch.device("cpu")))
-disease_model.eval()
-
-# Preprocessing transform
+# ------------------ Lazy Model Loading ------------------
+disease_model = None
 transform = transforms.Compose([
     transforms.Resize(256),
     transforms.ToTensor(),
 ])
 
+def load_disease_model():
+    global disease_model
+    if disease_model is None:
+        if not os.path.exists(disease_model_path):
+            raise FileNotFoundError(
+                f"❌ Model file not found at {disease_model_path}. "
+                "Did you run `git lfs install && git lfs pull`?"
+            )
+        model = ResNet9(3, len(disease_classes))
+        model.load_state_dict(torch.load(disease_model_path, map_location=torch.device("cpu")))
+        model.eval()
+        disease_model = model
+    return disease_model
+
 def predict_image(img_bytes):
+    model = load_disease_model()
     image = Image.open(io.BytesIO(img_bytes)).convert("RGB")
     img_t = transform(image)
     img_u = torch.unsqueeze(img_t, 0)
     with torch.no_grad():
-        yb = disease_model(img_u)
+        yb = model(img_u)
         _, preds = torch.max(yb, dim=1)
-    prediction = disease_classes[preds[0].item()]
-    return prediction
+    return disease_classes[preds[0].item()]
 
 # ------------------ Fertilizer Models ------------------
-try:
-    fert_cat_model = joblib.load(os.path.join(BASE_DIR, "models/categorical_model.joblib"))
-    fert_num_model = joblib.load(os.path.join(BASE_DIR, "models/numerical_model.joblib"))
-    preprocessor = joblib.load(os.path.join(BASE_DIR, "models/preprocessor.joblib"))
-except Exception as e:
-    print("⚠️ Fertilizer models not loaded:", str(e))
-    fert_cat_model, fert_num_model, preprocessor = None, None, None
-
+fert_cat_model, fert_num_model, preprocessor = None, None, None
 fertilizer_mapping = {
     0: "Urea (Nitrogen-rich)",
     1: "Diammonium Phosphate (DAP)",
@@ -269,13 +265,24 @@ fertilizer_mapping = {
     11: "Coated Urea (Slow Release)"
 }
 
+def load_fertilizer_models():
+    global fert_cat_model, fert_num_model, preprocessor
+    if fert_cat_model is None or fert_num_model is None or preprocessor is None:
+        try:
+            fert_cat_model = joblib.load(os.path.join(BASE_DIR, "models/categorical_model.joblib"))
+            fert_num_model = joblib.load(os.path.join(BASE_DIR, "models/numerical_model.joblib"))
+            preprocessor = joblib.load(os.path.join(BASE_DIR, "models/preprocessor.joblib"))
+        except Exception as e:
+            print("⚠️ Fertilizer models not loaded:", str(e))
+    return fert_cat_model, fert_num_model, preprocessor
+
 # ------------------ Flask App ------------------
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/')
-def hello_world():
-    return 'Hello, World!'
+def root():
+    return jsonify({"status": "ok", "message": "Plant & Fertilizer API running"})
 
 @app.route('/check-get', methods=['GET'])
 def check():
@@ -289,8 +296,8 @@ def check_post():
 # ------------------ Disease Prediction ------------------
 @app.route('/disease-predict', methods=['POST'])
 def disease_prediction():
-    file = request.files['file']
     try:
+        file = request.files['file']
         img = file.read()
         prediction = predict_image(img)
         prediction = disease_dic[prediction]
@@ -303,22 +310,18 @@ def disease_prediction():
 @app.route('/crop-predict', methods=['POST'])
 def crop_prediction():
     try:
-        from joblib import load
-        crop_recommendation_model_path = os.path.join(BASE_DIR, "models/crop.pkl")
-        crop_recommendation_model = load(crop_recommendation_model_path)
-
-        N = request.json['nitrogen']
-        P = request.json['phosphorous']
-        K = request.json['pottasium']
-        temperature = request.json['temperature']
-        humidity = request.json['humidity']
-        ph = request.json['ph']
-        rainfall = request.json['rainfall']
-
-        data = np.array([[N, P, K, temperature, humidity, ph, rainfall]])
-        my_prediction = crop_recommendation_model.predict(data)
+        crop_model = joblib.load(os.path.join(BASE_DIR, "models/crop.pkl"))
+        data = np.array([[
+            request.json['nitrogen'],
+            request.json['phosphorous'],
+            request.json['pottasium'],
+            request.json['temperature'],
+            request.json['humidity'],
+            request.json['ph'],
+            request.json['rainfall']
+        ]])
+        my_prediction = crop_model.predict(data)
         return jsonify({"prediction": my_prediction[0]})
-
     except Exception as e:
         print("❌ Error in /crop-predict:", str(e))
         return jsonify({"error": "Something went wrong on server."})
@@ -326,28 +329,29 @@ def crop_prediction():
 # ------------------ Fertilizer Prediction ------------------
 @app.route('/predict/fertilizer', methods=['POST'])
 def predict_fertilizer():
-    if fert_cat_model is None or fert_num_model is None or preprocessor is None:
+    cat_model, num_model, prep = load_fertilizer_models()
+    if cat_model is None or num_model is None or prep is None:
         return jsonify({"error": "Fertilizer models not loaded"})
 
-    data = request.json
-    df = pd.DataFrame([data])
-    X = preprocessor.transform(df)
+    try:
+        df = pd.DataFrame([request.json])
+        X = prep.transform(df)
+        cat_pred = cat_model.predict(X).ravel()
+        num_pred = num_model.predict(X).ravel()
 
-    cat_pred = fert_cat_model.predict(X).ravel()
-    num_pred = fert_num_model.predict(X).ravel()
+        fert_types = [
+            fertilizer_mapping.get(int(code), f"Unknown ({code})")
+            for code in cat_pred
+        ]
+        return jsonify({
+            "fertilizer_types": fert_types,
+            "fertilizer_amount": float(num_pred[0])
+        })
+    except Exception as e:
+        print("❌ Error in /predict/fertilizer:", str(e))
+        return jsonify({"error": "Failed to predict fertilizer"})
 
-    fert_types = [
-        fertilizer_mapping.get(int(code), f"Unknown ({code})")
-        for code in cat_pred
-    ]
-
-    return jsonify({
-        "fertilizer_types": fert_types,
-        "fertilizer_amount": float(num_pred[0])
-    })
-
+# ------------------ Entrypoint ------------------
 if __name__ == "__main__":
-    import os
-    port = int(os.environ.get("PORT", 5000))  # use Render's PORT, fallback to 5000 locally
+    port = int(os.environ.get("PORT", 5000))  # ✅ works on Render
     app.run(host="0.0.0.0", port=port)
-
