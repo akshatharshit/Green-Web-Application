@@ -16,12 +16,14 @@ import TreeTimeline from './UI/TreeTimeline'
 import About from './UI/About'
 import Contact from './UI/Contact'
 import LocationEwather from './weatherTemp/LocationEwather'
+import AIPredictionCards from './AI/AIPredictionCards'
 
 function Middle() {
   return (<>
   
     <Banner/>
     <PlantTree />
+    <AIPredictionCards/>
     <LocationEwather/>
     <MoveToList/>
     <AddItem/>
