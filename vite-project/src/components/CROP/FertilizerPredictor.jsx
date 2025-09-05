@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaSeedling, FaLeaf, FaTractor, FaCheckCircle, FaRegSmileBeam } from "react-icons/fa";
+import {
+  FaSeedling,
+  FaLeaf,
+  FaTractor,
+  FaCheckCircle,
+  FaRegSmileBeam,
+  FaCloudSunRain,
+  FaWater,
+  FaRegSun,
+  FaRecycle,
+  FaInfoCircle,
+} from "react-icons/fa";
 
 const fieldSuggestions = {
   Temperature: "Current air temperature in °C (auto-fetched if location is allowed).",
@@ -204,14 +215,27 @@ const FertilizerPredictor = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-100 to-lime-100 py-12 px-4 flex flex-col items-center">
+    <div className="min-h-screen bg-gradient-to-br from-[#f5fbe7] via-[#e7f6e7] to-[#f5fbe7] py-12 px-4 flex flex-col items-center">
       <div className="max-w-4xl w-full glass-card rounded-3xl shadow-2xl p-10 border border-green-200">
+        {/* Header */}
         <div className="flex items-center gap-4 mb-8">
-          <FaSeedling className="text-green-500 text-4xl animate-bounce" />
-          <h2 className="text-5xl font-extrabold text-green-700 drop-shadow">Fertilizer Predictor</h2>
-          <FaLeaf className="text-green-600 text-4xl animate-spin-slow" />
+          <FaSeedling className="text-green-600 text-4xl animate-bounce" />
+          <h2 className="text-4xl font-extrabold text-green-800 drop-shadow">Fertilizer Predictor</h2>
+          <FaLeaf className="text-green-700 text-4xl animate-spin-slow" />
         </div>
+        <div className="flex gap-6 mb-8">
+          <FaTractor className="text-yellow-600 text-2xl animate-pulse" />
+          <FaCloudSunRain className="text-blue-400 text-2xl" />
+          <FaWater className="text-blue-500 text-2xl animate-pulse" />
+          <FaRegSun className="text-yellow-400 text-2xl animate-spin-slow" />
+          <FaRecycle className="text-green-400 text-2xl animate-spin-slow" />
+        </div>
+        <div className="w-32 h-1 bg-lime-300 rounded-full mb-8" />
+        <p className="text-green-700/80 text-lg font-medium text-center mb-4">
+          Enter your field and crop details to get the best fertilizer advice for your farm!
+        </p>
 
+        {/* Location & Weather */}
         {!locationAllowed ? (
           <div className="flex gap-2 mb-8">
             <input
@@ -219,7 +243,7 @@ const FertilizerPredictor = () => {
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               placeholder="Enter your city..."
-              className="flex-1 p-4 border border-green-300 rounded-xl focus:ring focus:ring-green-300 text-lg"
+              className="flex-1 p-4 border border-green-300 rounded-xl focus:ring focus:ring-green-300 text-base"
             />
             <button
               type="button"
@@ -230,20 +254,25 @@ const FertilizerPredictor = () => {
             </button>
           </div>
         ) : (
-          <p className="mb-8 text-green-700 text-lg">
+          <p className="mb-8 text-green-700 text-base">
             📍 Using your current location: <strong>{location}</strong>
           </p>
         )}
 
-        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-6">
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {Object.keys(formData).map((key) => (
-            <div key={key} className="flex flex-col">
+            <div key={key} className="flex flex-col mb-2">
+              <label className="font-semibold text-green-800 mb-1 flex items-center gap-2">
+                <FaInfoCircle className="text-green-500" />
+                {key}
+              </label>
               {key === "SoilType" ? (
                 <select
                   name={key}
                   value={formData[key]}
                   onChange={handleChange}
-                  className="p-4 border border-green-300 rounded-xl focus:ring focus:ring-green-300 text-lg"
+                  className="p-3 border border-green-300 rounded-xl focus:ring focus:ring-green-300 text-base"
                 >
                   <option value="">Select Soil Type</option>
                   {soilOptions.map((soil) => (
@@ -255,7 +284,7 @@ const FertilizerPredictor = () => {
                   name={key}
                   value={formData[key]}
                   onChange={handleChange}
-                  className="p-4 border border-green-300 rounded-xl focus:ring focus:ring-green-300 text-lg"
+                  className="p-3 border border-green-300 rounded-xl focus:ring focus:ring-green-300 text-base"
                 >
                   <option value="">Select Crop</option>
                   {cropOptions.map((crop) => (
@@ -268,30 +297,31 @@ const FertilizerPredictor = () => {
                   value={formData[key]}
                   onChange={handleChange}
                   placeholder={key}
-                  className="p-4 border border-green-300 rounded-xl focus:ring focus:ring-green-300 text-lg"
+                  className="p-3 border border-green-300 rounded-xl focus:ring focus:ring-green-300 text-base"
                 />
               )}
-              <span className="text-xs text-gray-600 mt-2">💡 {fieldSuggestions[key]}</span>
+              <span className="text-xs text-gray-600 mt-1">💡 {fieldSuggestions[key]}</span>
             </div>
           ))}
 
           <button
             type="submit"
             disabled={loading}
-            className="col-span-2 mt-6 px-8 py-4 bg-green-600 text-white rounded-xl hover:bg-green-700 transition font-bold text-xl"
+            className="col-span-1 md:col-span-2 mt-4 px-8 py-3 bg-gradient-to-r from-green-700 via-lime-600 to-green-500 text-white rounded-xl hover:scale-[1.03] active:scale-95 transition font-bold text-lg shadow-lg"
           >
-            {loading ? "Predicting..." : "Get Fertilizer Recommendation"}
+            {loading ? "Predicting..." : "🌱 Get Fertilizer Recommendation"}
           </button>
         </form>
 
+        {/* Prediction Result */}
         {result && (
-          <div className="mt-10 p-8 bg-white rounded-2xl shadow-lg border border-green-100">
-            <h3 className="text-3xl font-bold mb-6 text-green-700 flex items-center gap-3">
+          <div className="mt-10 p-6 bg-lime-100/80 border border-green-300 rounded-2xl shadow-inner text-center animate-fade-in">
+            <h3 className="text-2xl font-bold mb-4 text-green-700 flex items-center gap-2">
               <FaCheckCircle className="text-green-500" /> Prediction Result
             </h3>
             {result.recommendations ? (
               result.recommendations.map((rec, idx) => (
-                <div key={idx} className="mt-3 text-lg">
+                <div key={idx} className="mt-2 text-base">
                   <p><strong>Fertilizer:</strong> {rec.fertilizer}</p>
                   <p><strong>Amount:</strong> {rec.amount} kg/ha</p>
                 </div>
@@ -299,7 +329,7 @@ const FertilizerPredictor = () => {
             ) : result.fertilizer_amount && result.fertilizer_types ? (
               <div>
                 <p><strong>Total Fertilizer Required:</strong> {result.fertilizer_amount} kg/ha</p>
-                <p className="mt-3"><strong>Suggested Types:</strong></p>
+                <p className="mt-2"><strong>Suggested Types:</strong></p>
                 <ul className="list-disc ml-6">
                   {result.fertilizer_types.map((fert, idx) => (
                     <li key={idx}>{fert}</li>
@@ -313,17 +343,17 @@ const FertilizerPredictor = () => {
         )}
 
         {/* Gemini AI Explanation Section */}
-        <div className="mt-10 p-8 bg-gradient-to-r from-green-50 via-lime-50 to-emerald-50 rounded-2xl shadow-lg border border-green-100">
-          <h3 className="text-3xl font-bold mb-6 flex items-center gap-3 text-green-700">
+        <div className="mt-10 p-6 bg-gradient-to-r from-green-50 via-lime-50 to-emerald-50 rounded-2xl shadow-inner border border-green-100">
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-green-700">
             <FaRegSmileBeam className="text-green-500" />
             Gemini Explanation
           </h3>
-          <div className="flex gap-4 mb-6">
+          <div className="flex gap-3 mb-4">
             {Object.entries(languageLabels).map(([lang, label]) => (
               <button
                 key={lang}
                 onClick={() => handleLanguageChange(lang)}
-                className={`px-6 py-3 rounded-xl font-semibold text-lg transition ${
+                className={`px-4 py-2 rounded-xl font-semibold text-base transition ${
                   language === lang
                     ? "bg-green-600 text-white shadow"
                     : "bg-gray-200 text-green-700 hover:bg-green-100"
@@ -333,15 +363,15 @@ const FertilizerPredictor = () => {
               </button>
             ))}
           </div>
-          <div className="text-gray-800 whitespace-pre-line text-lg leading-relaxed bg-white rounded-xl p-6 border border-green-100 shadow">
+          <div className="text-gray-800 whitespace-pre-line text-base leading-relaxed bg-white rounded-xl p-4 border border-green-100 shadow">
             {aiResponse || "Click a language button to generate explanation."}
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="text-lg text-green-700 text-center py-8 opacity-80 mt-16 border-t border-green-200">
-        <span className="flex items-center justify-center gap-3">
+      <footer className="text-xs text-green-700 text-center py-6 opacity-70 mt-12 border-t border-green-200">
+        <span className="flex items-center justify-center gap-2">
           <FaLeaf className="text-green-600" />
           Powered by Green | AI by Gemini & HuggingFace
           <FaTractor className="text-yellow-600" />
@@ -352,13 +382,20 @@ const FertilizerPredictor = () => {
       <style>
         {`
           .glass-card {
-            background: rgba(255,255,255,0.92);
-            backdrop-filter: blur(14px);
-            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.18);
+            background: rgba(245,252,245,0.85);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.13);
             border: 1px solid rgba(255,255,255,0.18);
           }
           .animate-spin-slow {
             animation: spin 3s linear infinite;
+          }
+          @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px);}
+            to { opacity: 1; transform: translateY(0);}
+          }
+          .animate-fade-in {
+            animation: fade-in 0.7s;
           }
         `}
       </style>

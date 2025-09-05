@@ -112,33 +112,33 @@ Please provide a farmer-friendly explanation in **two parts**:
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center py-10 px-4 bg-gradient-to-br from-green-50 via-emerald-100 to-lime-100">
+    <div className="min-h-screen flex flex-col items-center py-10 px-4 bg-gradient-to-br from-[#f5fbe7] via-[#e7f6e7] to-[#f5fbe7]">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg px-6 py-6 mb-8 w-full max-w-3xl mx-auto flex flex-col items-center gap-2 animate-fade-in border-b-2 border-green-200">
+      <header className="sticky top-0 z-10 bg-gradient-to-r from-green-900 via-green-800 to-lime-700 rounded-2xl shadow-lg px-6 py-7 mb-8 w-full max-w-3xl mx-auto flex flex-col items-center gap-2 animate-fade-in border-b-2 border-green-200">
         <div className="flex items-center gap-3">
-          <Leaf className="w-10 h-10 text-green-600 animate-bounce" />
-          <h1 className="text-4xl font-extrabold text-green-700 tracking-tight drop-shadow-lg">
+          <Leaf className="w-10 h-10 text-green-200 animate-bounce" />
+          <h1 className="text-4xl font-extrabold text-white tracking-tight drop-shadow-lg">
             Crop Disease Predictor
           </h1>
-          <FaTractor className="text-yellow-500 text-3xl animate-pulse" />
+          <FaTractor className="text-yellow-200 text-3xl animate-pulse" />
         </div>
         <div className="flex gap-4 mt-2">
-          <FaSeedling className="text-green-500 text-2xl animate-bounce" />
-          <FaCloudSunRain className="text-blue-400 text-2xl" />
-          <FaWater className="text-blue-500 text-2xl animate-pulse" />
-          <FaSun className="text-yellow-400 text-2xl animate-spin-slow" />
+          <FaSeedling className="text-green-300 text-2xl animate-bounce" />
+          <FaCloudSunRain className="text-blue-200 text-2xl" />
+          <FaWater className="text-blue-300 text-2xl animate-pulse" />
+          <FaSun className="text-yellow-300 text-2xl animate-spin-slow" />
         </div>
-        <div className="w-24 h-1 bg-green-300 rounded-full mt-3" />
-        <p className="text-green-700/80 mt-2 text-lg font-medium text-center">
+        <div className="w-24 h-1 bg-lime-300 rounded-full mt-3" />
+        <p className="text-green-100/90 mt-2 text-lg font-medium text-center">
           Upload a crop image and get instant disease analysis with AI-powered tips!
         </p>
       </header>
 
       {/* Agriculture Banner */}
-      <div className="flex items-center justify-center gap-6 py-4 bg-gradient-to-r from-green-100 via-lime-100 to-emerald-100 border-b border-green-200 rounded-xl mb-8 shadow">
+      <div className="flex items-center justify-center gap-6 py-4 bg-gradient-to-r from-[#e7f6e7] via-[#f5fbe7] to-[#e7f6e7] border-b border-green-200 rounded-xl mb-8 shadow">
         <FaTractor className="text-yellow-600 text-2xl animate-pulse" />
         <span className="font-semibold text-green-700 text-lg">Healthy Crops</span>
-        <FaSeedling className="text-green-500 text-2xl animate-bounce" />
+        <FaSeedling className="text-green-600 text-2xl animate-bounce" />
         <span className="font-semibold text-green-700 text-lg">Soil Care</span>
         <FaWater className="text-blue-500 text-2xl animate-pulse" />
         <span className="font-semibold text-green-700 text-lg">Irrigation</span>
@@ -156,16 +156,16 @@ Please provide a farmer-friendly explanation in **two parts**:
             type="file"
             accept="image/*"
             onChange={handleFileChange}
-            className="peer border border-green-300 bg-white/80 rounded-lg w-full p-4 pt-6 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-400 shadow"
+            className="peer border border-green-300 bg-white/80 rounded-lg w-full p-4 pt-6 text-gray-900 focus:outline-none focus:ring-2 focus:ring-lime-400 shadow"
           />
-          <label className="absolute left-4 top-2 text-green-800 text-base font-semibold transition-all peer-focus:text-green-600 peer-focus:top-1 peer-valid:top-1 peer-valid:text-green-600 flex items-center gap-2 pointer-events-none">
+          <label className="absolute left-4 top-2 text-green-800 text-base font-semibold transition-all peer-focus:text-lime-700 peer-focus:top-1 peer-valid:top-1 peer-valid:text-lime-700 flex items-center gap-2 pointer-events-none">
             <FaInfoCircle className="text-green-500" />
             Upload Crop Image
           </label>
         </div>
         <button
           type="submit"
-          className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-700 via-emerald-500 to-lime-500 text-white py-3 rounded-xl font-semibold text-lg hover:scale-[1.03] active:scale-95 shadow-lg transition-all disabled:opacity-60"
+          className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-700 via-lime-600 to-green-500 text-white py-3 rounded-xl font-semibold text-lg hover:scale-[1.03] active:scale-95 shadow-lg transition-all disabled:opacity-60"
           disabled={loading}
         >
           {loading && <Loader2 className="animate-spin w-5 h-5" />}
@@ -175,7 +175,7 @@ Please provide a farmer-friendly explanation in **two parts**:
       </form>
 
       {/* Divider */}
-      <div className="w-20 h-1 bg-green-300 rounded-full my-8 animate-fade-in" />
+      <div className="w-20 h-1 bg-lime-300 rounded-full my-8 animate-fade-in" />
 
       {/* Backend Result */}
       {result && (
@@ -184,7 +184,7 @@ Please provide a farmer-friendly explanation in **two parts**:
             <AlertTriangle className="text-yellow-500" /> Disease Prediction
           </h2>
           <div className="mb-2 flex items-center gap-2">
-            <FaSeedling className="text-green-500" />
+            <FaSeedling className="text-green-600" />
             <span className="font-semibold">Crop:</span> {result.Crop}
           </div>
           <div className="mb-4 flex items-center gap-2">
@@ -270,7 +270,7 @@ Please provide a farmer-friendly explanation in **two parts**:
         </div>
         <ul className="list-disc list-inside space-y-2 text-green-900 text-base">
           <li>
-            <FaSeedling className="inline mr-2 text-green-500" />
+            <FaSeedling className="inline mr-2 text-green-600" />
             Regularly check crops for disease symptoms.
           </li>
           <li>
@@ -356,9 +356,9 @@ Please provide a farmer-friendly explanation in **two parts**:
             animation: fade-in 0.7s;
           }
           .glass-card {
-            background: rgba(255,255,255,0.8);
+            background: rgba(245,252,245,0.85);
             backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.13);
             border: 1px solid rgba(255,255,255,0.18);
           }
           .animate-spin-slow {
