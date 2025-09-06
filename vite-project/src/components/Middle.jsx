@@ -1,6 +1,7 @@
 import React from 'react'
 import Banner from './Banner'
 import PlantTree from './PlantTree'
+import Hero from './Hero'
 import PlantCards from './PlantCards'
 import Add from './AI/Add'
 import AddItem from './itemcreate/AddItem'
@@ -20,16 +21,19 @@ import AIPredictionCards from './AI/AIPredictionCards'
 
 function Middle() {
   return (<>
-  
+{/*   
     <Banner/>
-    <PlantTree />
-    <AIPredictionCards/>
-    <LocationEwather/>
-    <MoveToList/>
-    <AddItem/>
+    <PlantTree /> */}
+    <Hero/>
+    <section id="ai-prediction-cards">
+    <AIPredictionCards />
+    </section>
+
+    {/* <LocationEwather/> */}
+    
     <AddBlogList/>
     <TestimonialSlider/>
-    <MapView/>
+    {/* <MapView/> */}
     <TreeTimeline/>
     <Add/>
     <Leaderboard/>
@@ -38,7 +42,9 @@ function Middle() {
     <InfoCardGrid/>
     <About/>
     <Contact/>
-    <TreeModel/>
+    <MoveToList/>
+    <AddItem/>
+    {/* <TreeModel/> */}
   </>
   )
 }
