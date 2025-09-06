@@ -23,6 +23,7 @@ import { Button } from "./Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../slices/authSlice";
+import f from "../assets/Logo.png"
 
 function NavBar() {
   const dispatch = useDispatch();
@@ -59,7 +60,7 @@ function NavBar() {
         {/* Logo */}
         <a href="/" className="flex items-center space-x-2">
           <img
-            src="https://i.pinimg.com/474x/2e/72/89/2e7289306f52e1f0e0ef3900d8b03360.jpg"
+            src={f}
             alt="Logo"
             className="h-14 w-14 rounded-full p-2"
           />
