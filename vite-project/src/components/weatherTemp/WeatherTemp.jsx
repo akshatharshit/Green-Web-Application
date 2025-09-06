@@ -15,6 +15,7 @@ const dummyWeather = {
   wind: { speed: 5 },
 };
 
+
 const dummyForecast = [
   { day: "Mon", temp: "20°C", condition: "Clear", icon: "01d" },
   { day: "Tue", temp: "22°C", condition: "Partly Cloudy", icon: "02d" },

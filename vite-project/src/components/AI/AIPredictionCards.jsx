@@ -12,6 +12,7 @@ function AIPredictionCards() {
   const [expandedCard, setExpandedCard] = useState(null);
   const [secretUnlocked, setSecretUnlocked] = useState(false);
 
+  
   const predictionCards = [
     {
       title: "Crop Disease Prediction",

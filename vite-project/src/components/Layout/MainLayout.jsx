@@ -19,6 +19,7 @@ const MainLayout = ({ children }) => {
   );
 };
 
+
 const pageContainerStyle = {
   position: 'relative',
   zIndex: 1,

@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
+
 // --- Async thunk for sending message ---
 export const sendMessageToGemini = createAsyncThunk(
   "chat/sendMessageToGemini",

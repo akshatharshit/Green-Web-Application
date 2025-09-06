@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchBlogs, deleteBlog } from '../../slices/blogSlice';
-import { motion } from 'framer-motion';
-import { toast } from 'react-toastify';
-
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBlogs, deleteBlog } from "../../slices/blogSlice";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { Trash2 } from "lucide-react";
 
 function Blog() {
   const dispatch = useDispatch();
@@ -14,17 +14,25 @@ function Blog() {
   }, [dispatch]);
 
   if (loading) {
-    return <div className="text-center text-green-500">Loading...</div>;
+    return (
+      <div className="text-center text-green-500 text-lg mt-10">
+        Loading blogs...
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="text-center text-red-500">Error: {error}</div>;
+    return (
+      <div className="text-center text-red-500 text-lg mt-10">
+        Error: {error}
+      </div>
+    );
   }
 
   const handleDelete = (id) => {
-    if (window.confirm('Are you sure you want to delete this blog?')) {
+    if (window.confirm("Are you sure you want to delete this blog?")) {
       dispatch(deleteBlog(id));
-      toast.success('Blog deleted successfully!', {
+      toast.success("✅ Blog deleted successfully!", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: true,
@@ -37,56 +45,65 @@ function Blog() {
   };
 
   return (
-    <>
-   
-    <div className="min-h-screen  flex flex-col items-center justify-start py-6 px-4">
-      <h1 className="text-4xl font-extrabold text-green-800 mb-8 text-center">
-        🌱 All Blogs
+    <div className="min-h-screen bg-white flex flex-col items-center py-10 px-4">
+      <h1 className="text-3xl font-bold text-green-800 mb-8 text-center">
+        🌱 Farmer Community Blogs
       </h1>
 
       {blogs.length === 0 ? (
-        <p className="text-center text-green-600 text-lg">No blogs found</p>
+        <p className="text-center text-gray-600">No blogs found</p>
       ) : (
-        <div className="space-y-8 w-full max-w-4xl">
-          {blogs.map((blog) => (
+        <div className="w-full max-w-4xl space-y-8">
+          {blogs.map((blog, index) => (
             <motion.div
-            key={blog._id}
-            className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              >
-              <h2 className="text-2xl font-semibold text-green-700">{blog.title}</h2>
+              key={blog._id}
+              className="border-b border-gray-200 pb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              {/* Title */}
+              <h2 className="text-xl font-semibold text-green-700 mb-2 hover:underline cursor-pointer">
+                {blog.title}
+              </h2>
 
-              {/* Blog content and image */}
-              <div className="flex flex-col md:flex-row items-start mt-4">
+              {/* Content + Image */}
+              <div className="flex gap-4">
                 <div className="flex-1">
-                  <p className="text-green-600 text-base">{blog.content}</p>
-                  <p className="mt-2 text-sm text-gray-500">By {blog.author?.userName || 'Anonymous'}</p>
+                  <p className="text-gray-700 text-sm leading-relaxed line-clamp-3">
+                    {blog.content}
+                  </p>
+                  <p className="mt-2 text-xs text-gray-500 italic">
+                    ✍️ By{" "}
+                    <span className="font-semibold">
+                      {blog.author?.userName || "Anonymous"}
+                    </span>
+                  </p>
                 </div>
 
                 {blog.imageUrl && (
                   <img
-                  src={blog.imageUrl}
-                  alt={blog.title}
-                  className="w-32 h-32 object-cover rounded-lg mt-4 md:mt-0 md:ml-6"
+                    src={blog.imageUrl}
+                    alt={blog.title}
+                    className="w-28 h-28 object-cover rounded-lg shadow"
                   />
                 )}
               </div>
 
-              <button
-                onClick={() => handleDelete(blog._id)}
-                className="mt-4 text-red-600 text-sm hover:underline"
+              {/* Actions */}
+              <div className="mt-3 flex justify-end">
+                <button
+                  onClick={() => handleDelete(blog._id)}
+                  className="flex items-center gap-1 px-3 py-1 text-xs font-medium text-red-600 border border-red-300 rounded hover:bg-red-50 transition"
                 >
-                Delete
-              </button>
+                  <Trash2 className="w-4 h-4" /> Delete
+                </button>
+              </div>
             </motion.div>
           ))}
         </div>
       )}
     </div>
-   
-      </>
   );
 }
 

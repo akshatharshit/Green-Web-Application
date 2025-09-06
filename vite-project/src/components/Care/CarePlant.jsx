@@ -1,37 +1,52 @@
 import React from 'react';
 import { BlogList } from './BlogList';
 
-
 function CarePlant() {
   return (
     <>
- 
       <div className="max-w-7xl mx-auto px-6 py-12">
-      <h1 className="text-4xl font-extrabold text-center text-green-700 mb-12">How to Take Care of Your Plants</h1>
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-green-700 mb-4">
+            🌱 How to Take Care of Your Plants
+          </h1>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            Healthy plants bring life to your space. With the right care—
+            from water to sunlight—you can help them thrive beautifully.
+          </p>
+        </div>
 
-      <div className="text-lg text-gray-700 mb-8">
-        <p>
-          Taking care of plants requires understanding their specific needs, including water, sunlight, soil, and
-          temperature. Whether you are a beginner or an experienced gardener, following the right care steps ensures your
-          plants thrive and flourish. Here are some general tips to get you started.
-        </p>
-        <ul className="list-disc ml-6 mt-4 space-y-2">
-          <li>Water your plant regularly, but ensure the soil is not waterlogged.</li>
-          <li>Provide proper sunlight for your plant—some need direct sunlight, while others thrive in the shade.</li>
-          <li>Use quality soil and fertilizer based on the type of plant.</li>
-          <li>Ensure the pot has proper drainage to avoid root rot.</li>
-          <li>Regularly prune dead or damaged leaves to promote new growth.</li>
-        </ul>
+        {/* Plant Care Tips */}
+        <div className="bg-green-50 border border-green-100 shadow-sm rounded-xl p-6 md:p-8 mb-12">
+          <h2 className="text-2xl font-bold text-green-700 mb-4">🌿 General Tips</h2>
+          <p className="text-gray-700 leading-relaxed">
+            Taking care of plants requires understanding their specific needs,
+            including water, sunlight, soil, and temperature. Whether you are a
+            beginner or an experienced gardener, these steps will guide you.
+          </p>
+          <ul className="list-disc ml-6 mt-4 space-y-2 text-gray-700">
+            <li>💧 Water regularly, but avoid waterlogging.</li>
+            <li>☀️ Provide the right amount of sunlight—direct or indirect.</li>
+            <li>🌱 Use quality soil and fertilizer suited for the plant type.</li>
+            <li>🪴 Ensure proper drainage to prevent root rot.</li>
+            <li>✂️ Prune dead or damaged leaves to encourage growth.</li>
+          </ul>
+        </div>
+
+        {/* Blog Section */}
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-semibold text-green-600">
+            🌼 Plant Care Blogs
+          </h2>
+          <p className="text-gray-500">
+            Explore helpful articles and expert tips for your plants.
+          </p>
+        </div>
+
+        <BlogList />
       </div>
-
-      <h2 className="text-3xl font-semibold text-center text-green-600 mb-8">Plant Care Blogs</h2>
-
-      
-      <BlogList />
-    </div>
-    
     </>
-  )
+  );
 }
 
-export default CarePlant
+export default CarePlant;

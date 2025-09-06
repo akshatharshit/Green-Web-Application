@@ -26,6 +26,7 @@ function CreateItem() {
     navigate('/auth/login');
     return;
   }
+  
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

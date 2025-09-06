@@ -17,7 +17,7 @@ const videoContainerStyle = {
   left: 0,
   width: '100%',
   height: '100%',
-  zIndex: -1, // Video stays behind other components
+  zIndex: -1, 
 };
 
 const backgroundVideoStyle = {

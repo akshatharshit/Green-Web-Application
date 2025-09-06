@@ -10,6 +10,7 @@ const UpiForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    
     const formData = new FormData();
     formData.append('upiId', upiId);
     formData.append('qrImage', qrImage);

@@ -3,6 +3,7 @@ import axios from "axios";
 
 const router = express.Router();
 
+
 // GET /api/plants
 router.get("/", async (req, res) => {
   try {

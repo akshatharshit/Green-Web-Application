@@ -15,6 +15,7 @@ function SearchCard() {
           <p className="text-xl text-gray-500">No plants found matching your search query.</p>
         </div>
         
+        
       </>
     );
   }

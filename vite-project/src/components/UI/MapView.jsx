@@ -9,6 +9,7 @@ const customIcon = new L.Icon({
   iconSize: [16, 16],
 });
 
+
 const userIcon = new L.Icon({
   iconUrl: 'https://cdn-icons-png.flaticon.com/512/149/149060.png',
   iconSize: [32, 32],

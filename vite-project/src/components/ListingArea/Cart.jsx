@@ -11,6 +11,7 @@ function Cart() {
     const [total, setTotal] = useState(0);
     const [itemCount, setItemCount] = useState(0);
 
+    
     useEffect(() => {
         const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
         setCart(cartItems);

@@ -11,6 +11,7 @@ import upiRoutes from './routes/upi.js';
 import  plantRoutes from "./routes/plantRoutes.js"
 import environmentRoutes from "./routes/environmentRoutes.js"
 
+
 dotenv.config();
 const app = express();
 

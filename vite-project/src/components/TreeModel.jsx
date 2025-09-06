@@ -19,6 +19,7 @@ function Earth({ autoRotate }) {
     }
   });
 
+  
   return (
     <group ref={group}>
       <primitive object={scene} scale={1.5} position={[0, -1.5, 0]} />

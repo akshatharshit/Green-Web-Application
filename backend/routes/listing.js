@@ -4,6 +4,7 @@ import { authenticate } from '../middleware/auth.js';
 
 const router = express.Router();
 
+
 // Create a listing
 router.post("/", authenticate, async (req, res) => {
   try {

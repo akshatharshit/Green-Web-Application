@@ -5,9 +5,7 @@ import Leaderboard from './Leaderboard.jsx';
 function Comleader() {
   return (
     <>
-
       <Leaderboard />
-     
     </>
   );
 }

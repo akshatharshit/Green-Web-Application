@@ -4,6 +4,7 @@ import axios from "axios";
 
 const router = express.Router();
 
+
 // GET /api/environment-news
 router.get("/", async (req, res) => {
   try {

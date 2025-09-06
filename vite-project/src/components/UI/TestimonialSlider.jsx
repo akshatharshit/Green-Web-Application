@@ -12,6 +12,7 @@ const TestimonialSlider = () => {
   const dispatch = useDispatch();
   const { testimonials, loading, error } = useSelector((state) => state.testimonial);
 
+  
   // Fetch from backend
   useEffect(() => {
     dispatch(fetchTestimonials());

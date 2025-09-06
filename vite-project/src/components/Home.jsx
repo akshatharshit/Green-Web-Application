@@ -7,6 +7,7 @@ import Footer from './Footer';
 import Middle from './Middle';
 import { fetchUPI } from '../slices/upiSlice';
 
+
 const Home = () => {
     const { Details, loading } = useSelector((state) => state.plant);
     const dispatch = useDispatch();

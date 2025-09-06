@@ -1,87 +1,108 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { uploadSubmission } from '../../slices/submissionSlice';
-import { useDropzone } from 'react-dropzone';
-import NavBar from '../NavBar';
-import Footer from '../Footer';
+// src/components/TreeSubmissionForm.jsx
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { uploadSubmission } from "../../slices/submissionSlice";
+import { useDropzone } from "react-dropzone";
+import { Upload, User, CheckCircle } from "lucide-react";
 
 export default function TreeSubmissionForm() {
-    const [name, setName] = useState('');
-    const [image, setImage] = useState(null);
-    const dispatch = useDispatch();
+  const [name, setName] = useState("");
+  const [image, setImage] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
+  const dispatch = useDispatch();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!name) {
-            alert("Please enter your name.");
-            return;
-        }
-        if (!image) {
-            alert("Please upload an image.");
-            return;
-        }
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('image', image);
-        dispatch(uploadSubmission(formData));
-        setName('');
-        setImage(null);
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!name) {
+      alert("Please enter your name.");
+      return;
+    }
+    if (!image) {
+      alert("Please upload an image.");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("image", image);
+    dispatch(uploadSubmission(formData));
+    setName("");
+    setImage(null);
+    setSubmitted(true);
 
-    const onDrop = (acceptedFiles) => {
-        setImage(acceptedFiles[0]);
-    };
+    setTimeout(() => setSubmitted(false), 2500); // hide success after 2.5s
+  };
 
-    const { getRootProps, getInputProps } = useDropzone({
-        onDrop,
-        accept: 'image/*'
-    });
+  const onDrop = (acceptedFiles) => {
+    setImage(acceptedFiles[0]);
+  };
 
-    return (
-        <>
-            <form onSubmit={handleSubmit} className="p-8 bg-white shadow-lg rounded-lg max-w-2xl mx-auto mt-10">
-                <h2 className="text-2xl font-bold text-green-600 mb-6 text-center">🌱 Submit Tree Proof Your Name Is Required</h2>
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: "image/*",
+  });
 
-                {/* Two Sections: Image Upload & Form */}
-                <div className="flex space-x-8">
-                    {/* Image Section */}
-                    <div className="flex-1 p-6 bg-green-50 rounded-lg">
-                        <div
-                            {...getRootProps()}
-                            className="flex justify-center items-center h-64 border-2 border-dashed border-green-500 rounded-lg bg-green-100 text-center cursor-pointer"
-                        >
-                            <input {...getInputProps()} />
-                            {image ? (
-                                <img
-                                    src={URL.createObjectURL(image)}
-                                    alt="Preview"
-                                    className="w-full h-full object-cover rounded-lg"
-                                />
-                            ) : (
-                                <p className="text-green-600 font-semibold">Drag & Drop an Image Here or Click to Upload</p>
-                            )}
-                        </div>
-                    </div>
+  return (
+    <div className="p-8 bg-white shadow-xl rounded-2xl max-w-3xl mx-auto mt-12 border border-green-100">
+      <h2 className="text-3xl font-bold text-green-700 mb-8 text-center">
+        🌱 Submit Your Tree Proof
+      </h2>
 
-                    {/* Form Section */}
-                    <div className="flex-1 p-6 bg-green-50 rounded-lg">
-                        <input
-                            type="text"
-                            placeholder="Your Name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="w-full mb-4 p-3 border border-gray-300 rounded-lg"
-                            required
-                        />
-                        <button
-                            type="submit"
-                            className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition duration-300"
-                        >
-                            Submit
-                        </button>
-                    </div>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Image Upload Section */}
+          <div className="flex-1 p-6 bg-green-50 rounded-xl border border-green-200">
+            <div
+              {...getRootProps()}
+              className="flex justify-center items-center h-64 border-2 border-dashed border-green-400 rounded-xl bg-green-100 cursor-pointer hover:bg-green-200 transition"
+            >
+              <input {...getInputProps()} />
+              {image ? (
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt="Preview"
+                  className="w-full h-full object-cover rounded-xl"
+                />
+              ) : (
+                <div className="flex flex-col items-center text-green-600">
+                  <Upload size={36} />
+                  <p className="mt-2 font-semibold">
+                    Drag & Drop or Click to Upload
+                  </p>
                 </div>
-            </form>
-        </>
-    );
+              )}
+            </div>
+          </div>
+
+          {/* Name + Submit Section */}
+          <div className="flex-1 flex flex-col justify-between p-6 bg-green-50 rounded-xl border border-green-200">
+            <div className="flex items-center border border-gray-300 rounded-lg px-3 mb-4 bg-white">
+              <User className="text-gray-500 mr-2" size={20} />
+              <input
+                type="text"
+                placeholder="Enter Your Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full p-3 outline-none"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition duration-300"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </form>
+
+      {/* Success Message */}
+      {submitted && (
+        <div className="mt-6 flex items-center justify-center text-green-600 font-semibold">
+          <CheckCircle className="mr-2" /> Submission Successful!
+        </div>
+      )}
+    </div>
+  );
 }

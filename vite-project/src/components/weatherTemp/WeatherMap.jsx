@@ -14,6 +14,7 @@ const WeatherMap = () => {
   const [airQualityData, setAirQualityData] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  
   useEffect(() => {
     // Get user's location from browser
     if (navigator.geolocation) {

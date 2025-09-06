@@ -371,3 +371,4 @@ Please provide a farmer-friendly explanation in **two parts**:
 };
 
 export default DiseasePredictor;
+

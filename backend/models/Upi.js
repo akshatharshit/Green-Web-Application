@@ -10,4 +10,5 @@ const upiSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+
 export default mongoose.model("Upi", upiSchema);

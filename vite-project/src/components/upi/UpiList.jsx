@@ -15,6 +15,7 @@ const UpiList = () => {
       dispatch(deleteUPI(id));
     }
   };
+  
 
   if (loading) return <p className="text-center mt-6">Loading...</p>;
 

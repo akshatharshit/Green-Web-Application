@@ -14,4 +14,5 @@ function Lottie1() {
   );
 }
 
+
 export default Lottie1;

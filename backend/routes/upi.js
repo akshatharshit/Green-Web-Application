@@ -13,6 +13,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
+
 // 🌱 Create UPI entry
 router.post('/', authenticate, upload.single('qrImage'), async (req, res) => {
   try {

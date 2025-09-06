@@ -26,7 +26,7 @@ function PlantInfo() {
     
     <SearchBar/>
     <div className="plant-info-container py-8 px-4">
-      <h2 className="text-3xl font-semibold text-center mb-8">Plants Information</h2>
+      <h2 className="text-3xl font-semibold text-center text-gray-200 mb-8">Plants Information</h2>
       <div className="plant-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {plants.map((plant, index) => (
           <Link to={`/Plant-info/${plant.id}`} key={plant.id}>
@@ -39,5 +39,6 @@ function PlantInfo() {
       </>
   );
 }
+
 
 export default PlantInfo;

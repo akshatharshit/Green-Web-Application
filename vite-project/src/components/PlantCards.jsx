@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 function PlantCards() {
   const navigate = useNavigate();
 
+  
   const cards = [
     {
       title: "Know About Plants & Trees",

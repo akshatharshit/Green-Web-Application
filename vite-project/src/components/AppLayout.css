@@ -11,6 +11,7 @@
   margin-left: 0; /* Default margin */
 }
 
+
 /* Style for the main content when the sidebar is open */
 .main-content.sidebar-open {
   margin-left: 256px; /* Adjust to the width of your SideBar (w-64 = 256px) */

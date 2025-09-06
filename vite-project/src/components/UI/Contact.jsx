@@ -10,7 +10,7 @@ function Contact() {
         <p className="text-gray-700 mb-6 text-center">
           Have questions, ideas, or just want to say hello? We’d love to hear from you. Let's grow together!
         </p>
-
+4
         <form className="space-y-6">
           <div>
             <label className="block text-green-700 font-medium mb-1">Name</label>

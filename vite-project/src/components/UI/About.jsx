@@ -23,19 +23,68 @@ const About = () => {
   const { t } = useTranslation();
 
   const features = [
-    { emoji: "📷", title: t("Identify Any Plant"), description: t("Use our scanner, camera upload, or search tools to identify thousands of plant species with instant AI recognition.") },
-    { emoji: "✍️", title: t("Write & Read Plant Blogs"), description: t("Explore curated content or create your own blog posts on plant care, biodiversity, gardening, and nature travel.") },
-    { emoji: "🛒", title: t("Eco Marketplace"), description: t("Buy or sell eco-friendly items in our green marketplace. Track items, manage your cart, and enjoy secure checkout.") },
-    { emoji: "🌱", title: t("Plant a Tree Program"), description: t("Plant real trees, upload proof, and earn a certificate after every 5 trees! View your progress on our interactive leaderboard.") },
-    { emoji: "🗺️", title: t("Global Green Map"), description: t("Discover 100+ protected and green reverse areas. See your own location and find forests near you.") },
-    { emoji: "🎮", title: t("Quests & Rewards"), description: t("Take part in challenges like saving water or planting a sapling. Earn green points and climb the leaderboard!") },
-    { emoji: "🤖", title: t("Your AI Plant Assistant"), description: t("Chat with our AI bot for plant suggestions, gardening help, eco-tips, and more! Always available when you need guidance.") },
-    { emoji: "☀️", title: t("Real-Time Weather & News"), description: t("Stay informed with current weather updates and trending news articles related to nature and sustainability.") },
-    { emoji: "📊", title: t("Data & Charts"), description: t("Track your impact with visual charts: trees planted, blogs contributed, items traded, and more.") },
-    { emoji: "🌍", title: t("3D Nature Experiences"), description: t("Immerse yourself in our mini 3D models or upcoming VR tours for a virtual walk through forests and trails.") },
-    { emoji: "🤝", title: t("Green Community & Impact"), description: t("Join a growing global community of eco-warriors. Share your journey, inspire others, and view our collective impact.") },
-    { emoji: "📚", title: t("Plant Education & Guides"), description: t("Learn how to care for different plants, understand local biodiversity, and explore nature education resources.") },
-  ];
+  { 
+    emoji: "🌾", 
+    title: t("AI Crop Prediction"), 
+    description: t("Predict the best crops for your soil and season using our AI-powered crop recommendation model. Maximize yield and farm sustainably.") 
+  },
+  { 
+    emoji: "🍂", 
+    title: t("Disease Detection"), 
+    description: t("Upload a photo of your crop leaves and our AI model instantly detects possible diseases, giving you early warnings and remedies.") 
+  },
+  { 
+    emoji: "🧪", 
+    title: t("Fertilizer Recommendation"), 
+    description: t("Get smart fertilizer suggestions based on your soil nutrients and crop type. Save money and boost soil health with precise guidance.") 
+  },
+  { 
+    emoji: "📊", 
+    title: t("Yield Prediction"), 
+    description: t("Estimate your farm’s harvest with AI-driven yield prediction. Plan your sales, storage, and future farming decisions confidently.") 
+  },
+  { 
+    emoji: "✍️", 
+    title: t("Farmer Stories & Blogs"), 
+    description: t("Share your journey, farming techniques, and experiences with trees and crops. Learn from other farmers’ success stories.") 
+  },
+  { 
+    emoji: "🛒", 
+    title: t("Agri Marketplace"), 
+    description: t("Buy or sell seeds, fertilizers, tools, and eco-friendly farming products. Secure payments and trusted farmer-to-farmer deals.") 
+  },
+  { 
+    emoji: "🌱", 
+    title: t("Tree Plantation Program"), 
+    description: t("Plant real trees on your farm, track growth, and earn certificates. Strengthen soil fertility and protect your land for the future.") 
+  },
+  { 
+    emoji: "☀️", 
+    title: t("Weather & Farming News"), 
+    description: t("Get real-time weather updates, monsoon alerts, and the latest agricultural news to make better farming decisions.") 
+  },
+  { 
+    emoji: "🤖", 
+    title: t("AI Farming Assistant"), 
+    description: t("Chat with your personal AI assistant for advice on crops, soil health, tree planting, and sustainable practices.") 
+  },
+  { 
+    emoji: "📚", 
+    title: t("Farmer Education & Guides"), 
+    description: t("Learn best practices for crop rotation, soil conservation, tree care, and modern farming methods.") 
+  },
+  { 
+    emoji: "🤝", 
+    title: t("Farmer Community"), 
+    description: t("Join a network of farmers, share knowledge, and collaborate on agricultural challenges to grow together.") 
+  },
+  { 
+    emoji: "📈", 
+    title: t("Farm Data & Analytics"), 
+    description: t("Visualize your farm’s progress with charts: crop health, yields, fertilizer use, and tree plantation impact.") 
+  },
+];
+
 
   return (
     <div className="py-14 px-6 md:px-16 text-green-600 ">

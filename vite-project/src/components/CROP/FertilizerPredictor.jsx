@@ -404,3 +404,4 @@ const FertilizerPredictor = () => {
 };
 
 export default FertilizerPredictor;
+

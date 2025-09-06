@@ -18,6 +18,7 @@ function SearchBar() {
       navigate("/Plant-info/search");
     }
   };
+  
 
   return (
     <div className="search-bar-container py-4 px-4 sm:px-8 ">

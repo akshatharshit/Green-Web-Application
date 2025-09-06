@@ -12,6 +12,7 @@ import testimonialReducer from './slices/testimonialSlice'
 import upiReducer from './slices/upiSlice'
 import geminiReducer from './slices/geminiSlice';
 
+
 export const store = configureStore({
   reducer: {
     plant: plantReducer,

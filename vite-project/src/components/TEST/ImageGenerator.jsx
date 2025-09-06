@@ -11,6 +11,7 @@ export default function ImageGenerator() {
     setLoading(true);
     setImage(null);
 
+    
     try {
       const response = await fetch(
         "https://router.huggingface.co/together/v1/images/generations",

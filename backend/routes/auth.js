@@ -5,6 +5,7 @@ import User from "../models/User.js";
 import sendEmail from "../utils/sendEmail.js";
 const router = express.Router();
 
+
 // REGISTER
 router.post("/register", async (req, res) => {
     try {

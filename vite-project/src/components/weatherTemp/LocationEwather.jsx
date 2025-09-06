@@ -15,6 +15,7 @@ import {
   FaRegClock,
 } from "react-icons/fa";
 
+
 const key = import.meta.env.VITE_WEATHER_API_KEY;
 
 export default function LocationWeather() {

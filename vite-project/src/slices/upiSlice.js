@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+
 const upiSlice = createSlice({
   name: 'upi',
   initialState: {

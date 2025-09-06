@@ -34,6 +34,7 @@ const tips = [
   },
 ];
 
+
 const InfoCardGrid = () => {
   return (
     <div className="py-12 px-4 md:px-10 mt-16 mb-16 ">

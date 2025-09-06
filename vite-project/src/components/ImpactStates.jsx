@@ -8,6 +8,7 @@ const initialStats = [
   { label: 'Projects Completed', value: 2 },
 ];
 
+
 export default function ImpactStats() {
   const [stats, setStats] = useState(initialStats);
 

@@ -44,11 +44,13 @@ function AddItem() {
           viewport={{ once: true, amount: 0.3 }}
         >
           <h2 className="text-4xl md:text-5xl font-extrabold text-green-800 mb-6 leading-tight">
-            Give Items a Second Life
+            List Your Fresh Harvest
           </h2>
           <p className="text-gray-700 text-lg md:text-xl mb-8 leading-relaxed">
-            Turn your unused items into something valuable. Promote reusability and help reduce waste — while earning from things you no longer need.
+            Have extra vegetables, fruits, or grains? Share your harvest with the community.
+            Earn directly from your produce while supporting healthy, farm-fresh living.
           </p>
+
 
           <button
             onClick={() => navigate('/item/create')}
@@ -57,7 +59,7 @@ function AddItem() {
             Create Item
           </button>
 
-          { !hasUPIData && (
+          {!hasUPIData && (
             <>
               <button
                 onClick={() => navigate('/upiId')}
