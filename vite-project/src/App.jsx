@@ -34,46 +34,52 @@ import ProductionOutagePage from './components/TEST/ProductionOutagePage';
 
 
 
-function App() {
-  return (
-    <Router>
-      <MainLayout>
-        <Routes>
-          {/* <Route path='/' element={<Home />} /> */}
-          <Route path='/' element={<ProductionOutagePage />} />
-          <Route path='/Plant-info' element={<PlantInfo />} />
-          <Route path='/Plant-info/:id' element={<DetailPlant />} />
-          <Route path='/Plant-info/Search' element={<SearchCard />} />
-          <Route path='/news' element={<News />} />
-          <Route path='/care' element={<CarePlant />} />
-          <Route path='/ai' element={<AI />} />
-          <Route path='/auth/login' element={<Login />} />
-          <Route path='/auth/register' element={<Register />} />
-          <Route path='/item/create' element={<CreateItem />} />
-          <Route path='/item/listings' element={<ItemList />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/blog/create' element={<CreateBolg />} />
-          <Route path='/blog' element={<Blog />} />
-          <Route path='/submission/upload' element={<TreeSubmissionForm />} />
-          <Route path='/leaderboard' element={<Comleader />} />
-          <Route path='/testimonial' element={<AddTestimonialForm />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/contact' element={<Contact />} />
-          <Route path='/upiId' element={<UpiForm />} />
-          <Route path='/upiId/edit' element={<UpiList/>} />
-          <Route path='/weather' element={<WeatherTemp/>} />
-          <Route path='/disease' element={<DiseasePredictor/>} />
-          <Route path='/img' element={<ImageGenerator/>} />
-          <Route path='/crop' element={<CropPredictor/>} />
-          <Route path='/FertilizerPredictor' element={<FertilizerPredictor/>} />
-          <Route path='/weed' element={<WeedDetector/>} />
+// function App() {
+//   return (
+//     <Router>
+//       <MainLayout>
+//         <Routes>
+//           <Route path='/' element={<Home />} />
+//           <Route path='/Plant-info' element={<PlantInfo />} />
+//           <Route path='/Plant-info/:id' element={<DetailPlant />} />
+//           <Route path='/Plant-info/Search' element={<SearchCard />} />
+//           <Route path='/news' element={<News />} />
+//           <Route path='/care' element={<CarePlant />} />
+//           <Route path='/ai' element={<AI />} />
+//           <Route path='/auth/login' element={<Login />} />
+//           <Route path='/auth/register' element={<Register />} />
+//           <Route path='/item/create' element={<CreateItem />} />
+//           <Route path='/item/listings' element={<ItemList />} />
+//           <Route path='/cart' element={<Cart />} />
+//           <Route path='/blog/create' element={<CreateBolg />} />
+//           <Route path='/blog' element={<Blog />} />
+//           <Route path='/submission/upload' element={<TreeSubmissionForm />} />
+//           <Route path='/leaderboard' element={<Comleader />} />
+//           <Route path='/testimonial' element={<AddTestimonialForm />} />
+//           <Route path='/about' element={<About />} />
+//           <Route path='/contact' element={<Contact />} />
+//           <Route path='/upiId' element={<UpiForm />} />
+//           <Route path='/upiId/edit' element={<UpiList/>} />
+//           <Route path='/weather' element={<WeatherTemp/>} />
+//           <Route path='/disease' element={<DiseasePredictor/>} />
+//           <Route path='/img' element={<ImageGenerator/>} />
+//           <Route path='/crop' element={<CropPredictor/>} />
+//           <Route path='/FertilizerPredictor' element={<FertilizerPredictor/>} />
+//           <Route path='/weed' element={<WeedDetector/>} />
           
-        </Routes>
-      <LandConverterChat />
-      </MainLayout>
-      <ToastContainer/>
-    </Router>
-  );
+//         </Routes>
+//       <LandConverterChat />
+//       </MainLayout>
+//       <ToastContainer/>
+//     </Router>
+//   );
+// }
+
+
+
+
+function App() {
+  return <ProductionOutagePage/>
 }
 
 export default App;
