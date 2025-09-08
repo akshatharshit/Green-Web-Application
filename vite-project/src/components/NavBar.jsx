@@ -216,11 +216,19 @@ function NavBar() {
               >
                 Help
               </div>
+              
               <div
                 onClick={() => navigate("/about")}
                 className="px-4 py-2 hover:bg-green-100 cursor-pointer rounded-b-lg"
               >
                 About
+              </div>
+
+              <div
+                onClick={() => navigate("/weed")}
+                className="px-4 py-2 hover:bg-green-100 cursor-pointer rounded-b-lg"
+              >
+                Detector
               </div>
             </div>
           )}

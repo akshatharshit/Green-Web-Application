@@ -135,7 +135,7 @@ const News = () => {
                   {new Date(article.publishedAt).toLocaleDateString()}
                 </p>
               </div>
-            </div>
+            </div>            
           ))
         ) : (
           <p className="text-center text-gray-600 col-span-full">

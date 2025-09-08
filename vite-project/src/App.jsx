@@ -29,6 +29,8 @@ import ImageGenerator from './components/TEST/ImageGenerator';
 import CropPredictor from './components/CROP/CropPredictor';
 import FertilizerPredictor from './components/CROP/FertilizerPredictor';
 import LandConverterChat from './components/CROP/LandConverterChat';
+import WeedDetector from './components/CROP/WeedDetector';
+import ProductionOutagePage from './components/TEST/ProductionOutagePage';
 
 
 
@@ -37,7 +39,8 @@ function App() {
     <Router>
       <MainLayout>
         <Routes>
-          <Route path='/' element={<Home />} />
+          {/* <Route path='/' element={<Home />} /> */}
+          <Route path='/' element={<ProductionOutagePage />} />
           <Route path='/Plant-info' element={<PlantInfo />} />
           <Route path='/Plant-info/:id' element={<DetailPlant />} />
           <Route path='/Plant-info/Search' element={<SearchCard />} />
@@ -63,6 +66,7 @@ function App() {
           <Route path='/img' element={<ImageGenerator/>} />
           <Route path='/crop' element={<CropPredictor/>} />
           <Route path='/FertilizerPredictor' element={<FertilizerPredictor/>} />
+          <Route path='/weed' element={<WeedDetector/>} />
           
         </Routes>
       <LandConverterChat />
