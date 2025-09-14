@@ -45,11 +45,11 @@ function AIPredictionCards() {
       secretLevel: 2
     },
     {
-      title: "Crop Yield Prediction",
+      title: "Crop Prediction",
       subtitle: "Future Harvest Intelligence",
-      description: "Predict crop yields using satellite data, weather patterns, and soil conditions. Plan your harvest with confidence.",
+      description: "Predict crop, weather patterns, and soil conditions. Plan your harvest with confidence.",
       icon: <Sprout className="h-8 w-8" />,
-      features: ["Satellite imagery analysis", "Weather pattern integration", "Yield forecasting", "Market price predictions"],
+      features: ["Weather pattern integration", "Yield forecasting", "Market price predictions"],
       secretFeatures: ["Climate change adaptation", "Genetic optimization suggestions", "Supply chain optimization"],
       route: "/crop",
       gradient: "from-green-500 via-emerald-500 to-teal-500",

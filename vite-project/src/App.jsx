@@ -59,17 +59,22 @@ function App() {
           <Route path='/about' element={<About />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/upiId' element={<UpiForm />} />
-          <Route path='/upiId/edit' element={<UpiList/>} />
-          <Route path='/weather' element={<WeatherTemp/>} />
-          <Route path='/disease' element={<DiseasePredictor/>} />
-          <Route path='/img' element={<ImageGenerator/>} />
-          <Route path='/crop' element={<CropPredictor/>} />
-          <Route path='/FertilizerPredictor' element={<FertilizerPredictor/>} />
-          <Route path='/weed' element={<WeedDetector/>} />
+          <Route path='/upiId/edit' element={<UpiList />} />
+          <Route path='/weather' element={<WeatherTemp />} />
+          <Route path='/disease' element={<DiseasePredictor />} />
+          <Route path='/img' element={<ImageGenerator />} />
+          <Route path='/crop' element={<CropPredictor />} />
+          <Route path='/FertilizerPredictor' element={<FertilizerPredictor />} />
+          <Route path='/weed' element={<WeedDetector />} />
         </Routes>
-      <LandConverterChat />
+        {/* Floating tools */}
+        <div>
+          <LandConverterChat  />
+          <AI />
+        </div>
+        {/* End floating tools */}
       </MainLayout>
-      <ToastContainer/>
+      <ToastContainer />
     </Router>
   );
 }
